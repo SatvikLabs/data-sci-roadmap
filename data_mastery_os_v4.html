@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A complete self-contained data science curriculum covering Excel, SQL, Python, and ML — with live sandboxes, quizzes, and progress tracking.">
+<title>Data Mastery OS — Excel · SQL · Python · Data Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #080C14;
+  --bg2:       #0D1220;
+  --bg3:       #111827;
+  --bg4:       #1a2235;
+  --surface:   #1e2d45;
+  --surface2:  #243352;
+  --border:    #1e2d45;
+  --border2:   #2a3f60;
+  --text:      #e8edf8;
+  --text2:     #8fa3c8;
+  --text3:     #4a6080;
+  --indigo:    #6366f1;
+  --indigo2:   #818cf8;
+  --emerald:   #10b981;
+  --emerald2:  #34d399;
+  --amber:     #f59e0b;
+  --amber2:    #fbbf24;
+  --cyan:      #06b6d4;
+  --cyan2:     #22d3ee;
+  --rose:      #f43f5e;
+  --rose2:     #fb7185;
+  --violet:    #8b5cf6;
+  --violet2:   #a78bfa;
+  --sidebar-w: 240px;
+  --r:         8px;
+  --r2:        14px;
+  --ease:      0.2s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"] {
+  --bg:        #f0f4fc;
+  --bg2:       #ffffff;
+  --bg3:       #e5eaf5;
+  --bg4:       #d8e0f0;
+  --surface:   #cdd8f0;
+  --surface2:  #c0cee8;
+  --border:    #b8c9e8;
+  --border2:   #8faad8;
+  --text:      #0a0f1e;
+  --text2:     #334155;
+  --text3:     #64748b;
+  --indigo:    #4f46e5;
+  --indigo2:   #6366f1;
+  --emerald:   #059669;
+  --emerald2:  #10b981;
+  --amber:     #d97706;
+  --amber2:    #f59e0b;
+  --cyan:      #0891b2;
+  --cyan2:     #06b6d4;
+  --rose:      #e11d48;
+  --rose2:     #f43f5e;
+  --violet:    #7c3aed;
+  --violet2:   #8b5cf6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:1rem;line-height:1.75;display:flex;min-height:100vh;transition:background var(--ease),color var(--ease)}
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;z-index:100;transition:transform var(--ease),background var(--ease)}
+.sb-header{padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-wordmark{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:-0.5px;line-height:1.2}
+.toc-scroll{overflow-y:auto;flex:1;padding:6px 0 14px}
+.toc-scroll::-webkit-scrollbar{width:2px}
+.toc-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-wordmark .dm{color:var(--indigo2)}
+.sb-wordmark .os{color:var(--text3)}
+.sb-sub{font-size:0.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.12em;margin-top:4px}
+.progress-bar-wrap{margin-top:14px;padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)}
+.pb-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.pb-label{font-size:0.68rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.08em}
+.pb-pct{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--indigo2);font-weight:500}
+.pb-track{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(--indigo),var(--emerald));border-radius:4px;transition:width 0.5s ease;width:0%}
+.pb-saved{font-size:0.58rem;color:var(--emerald2);opacity:0;transition:opacity 0.3s;margin-left:4px}
+.pb-saved.show{opacity:1}
+.pb-sub{font-size:0.62rem;color:var(--text3);margin-top:6px}
+.global-banner{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(244,63,94,0.92);color:#fff;font-size:0.82rem;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(8px);gap:12px;transform:translateY(-100%);transition:transform 0.3s ease}
+.global-banner.show{transform:translateY(0)}
+.global-banner button{background:none;border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:4px;padding:2px 9px;cursor:pointer;font-size:0.75rem;flex-shrink:0}
+
+.phase-group{margin-bottom:2px}
+.phase-label{display:flex;align-items:center;gap:8px;padding:8px 16px 5px;font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:var(--text3);cursor:pointer;user-select:none;transition:color var(--ease)}
+.phase-label:hover{color:var(--text2)}
+.phase-label .ph-toggle{margin-left:auto;font-size:0.55rem;transition:transform var(--ease);color:var(--text3)}
+.phase-group.collapsed .phase-links{display:none}
+.phase-group.collapsed .ph-toggle{transform:rotate(-90deg)}
+.phase-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.phase-dot.excel{background:var(--amber)}
+.phase-dot.sql{background:var(--cyan)}
+.phase-dot.python{background:var(--emerald)}
+.phase-dot.ds{background:var(--violet)}
+.phase-dot.project{background:var(--rose)}
+.phase-dot.core{background:var(--indigo2)}
+.toc-link{display:flex;align-items:center;gap:8px;padding:4px 16px 4px 24px;font-size:0.72rem;font-weight:400;color:var(--text3);cursor:pointer;text-decoration:none;border-left:2px solid transparent;transition:all var(--ease);line-height:1.4}
+.toc-link:hover{color:var(--text);background:rgba(99,102,241,0.05)}
+.toc-link.active{color:var(--text);border-left-color:var(--indigo2);background:rgba(99,102,241,0.07)}
+.toc-link .lnum{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--text3);flex-shrink:0;min-width:16px}
+.toc-link.done .lnum::after{content:"✓";color:var(--emerald2);font-size:0.58rem;margin-left:2px}
+.sb-footer{padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.theme-btn{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--text3);background:none;border:1px solid var(--border);border-radius:20px;padding:5px 11px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all var(--ease)}
+.theme-btn:hover{border-color:var(--indigo2);color:var(--indigo2)}
+.streak-badge{font-size:0.68rem;color:var(--amber2);display:flex;align-items:center;gap:4px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+.hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:60px 64px 52px;position:relative;overflow:hidden}
+.hero-eyebrow{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.16em;color:var(--indigo2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--indigo2)}
+h1.hero-title{font-family:'Syne',sans-serif;font-size:3.6rem;font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:20px;background:linear-gradient(135deg,var(--text) 40%,var(--indigo2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.pill{font-size:0.72rem;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid;letter-spacing:0.04em}
+.pill.excel{color:var(--amber2);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08)}
+.pill.sql{color:var(--cyan2);border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.08)}
+.pill.python{color:var(--emerald2);border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.08)}
+.pill.ds{color:var(--violet2);border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08)}
+
+.chapter{max-width:860px;margin:0 auto;padding:48px 48px 40px;border-bottom:1px solid var(--border)}
+.chapter:last-child{border-bottom:none}
+.chapter-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.phase-tag{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:3px 9px;border-radius:20px;border:1px solid}
+.phase-tag.excel{color:var(--amber2);border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08)}
+.phase-tag.sql{color:var(--cyan2);border-color:rgba(6,182,212,0.4);background:rgba(6,182,212,0.08)}
+.phase-tag.python{color:var(--emerald2);border-color:rgba(16,185,129,0.4);background:rgba(16,185,129,0.08)}
+.phase-tag.ds{color:var(--violet2);border-color:rgba(139,92,246,0.4);background:rgba(139,92,246,0.08)}
+.phase-tag.project{color:var(--rose2);border-color:rgba(244,63,94,0.4);background:rgba(244,63,94,0.08)}
+.chapter-num{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text3)}
+.mark-btn{margin-left:auto;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid var(--border2);color:var(--text3);background:none;cursor:pointer;transition:all var(--ease)}
+.mark-btn:hover{border-color:var(--emerald2);color:var(--emerald2)}
+h1.ch-title{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.ch-hook{font-size:1.05rem;color:var(--text2);line-height:1.85;margin-bottom:28px;border-left:3px solid var(--border2);padding-left:16px;font-style:italic}
+h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin:32px 0 12px;letter-spacing:-0.2px;color:var(--text);padding-left:12px;border-left:3px solid var(--border2)}
+h3{font-size:1rem;font-weight:600;margin:26px 0 10px;color:var(--text)}
+p{margin-bottom:14px;color:var(--text2)}
+strong{color:var(--text);font-weight:600}
+ul,ol{padding-left:20px;margin-bottom:14px;color:var(--text2)}
+li{margin-bottom:6px}
+a{color:var(--indigo2);text-decoration:none}
+a:hover{text-decoration:underline}
+.callout{border-radius:0;padding:10px 0 10px 18px;margin:20px 0;border:none;border-left:2.5px solid;background:transparent}
+.callout-label{font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:7px;color:var(--text2)}
+.callout p{margin:0;font-size:0.93rem}
+.callout.why{border-left-color:var(--indigo2)}
+.callout.analogy{border-left-color:var(--cyan)}
+.callout.insight{border-left-color:var(--emerald)}
+.callout.warning{border-left-color:var(--amber)}
+.callout.danger{border-left-color:var(--rose)}
+.callout.project{border-left-color:var(--rose)}
+.code-wrap{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r2);overflow:hidden;margin:18px 0}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--bg3);border-bottom:1px solid var(--border2)}
+.code-lang{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3)}
+.code-lang.excel{color:var(--amber2)}
+.code-lang.sql{color:var(--cyan2)}
+.code-lang.python{color:var(--emerald2)}
+.copy-btn{font-size:0.68rem;color:var(--text3);background:none;border:1px solid var(--border);border-radius:4px;padding:2px 8px;cursor:pointer;transition:all var(--ease);font-family:inherit}
+.copy-btn:hover{color:var(--indigo2);border-color:var(--indigo2)}
+pre{margin:0;padding:18px 20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:0.81rem;line-height:1.75}
+code{font-family:'JetBrains Mono',monospace;font-size:0.82em;background:var(--bg3);color:var(--cyan2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+.kw{color:#818cf8;font-weight:500}
+.fn{color:#34d399}
+.str{color:#fbbf24}
+.num{color:#f87171}
+.cm{color:#4a6080;font-style:italic}
+.tbl{color:#22d3ee}
+.op{color:#a78bfa}
+.py-kw{color:#818cf8;font-weight:500}
+.py-fn{color:#34d399}
+.py-str{color:#fbbf24}
+.py-num{color:#f87171}
+.py-cm{color:#4a6080;font-style:italic}
+.py-cls{color:#22d3ee}
+.xl-fn{color:#fbbf24;font-weight:500}
+.xl-ref{color:#34d399}
+.xl-str{color:#a78bfa}
+.xl-num{color:#f87171}
+.xl-op{color:#818cf8}
+.table-wrap{overflow-x:auto;margin:18px 0;border-radius:var(--r2);border:1px solid var(--border)}
+.dtable{width:100%;border-collapse:collapse;font-size:0.85rem}
+.dtable th{background:var(--bg3);color:var(--text3);font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.dtable td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}
+.dtable tr:hover td{background:rgba(99,102,241,0.04)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:20px 0}
+.concept-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;transition:border-color var(--ease),transform var(--ease);cursor:default}
+.concept-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.concept-card .cc-icon{font-size:1.5rem;margin-bottom:8px;display:block}
+.concept-card .cc-title{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.concept-card .cc-desc{font-size:0.75rem;color:var(--text3);line-height:1.5}
+.quiz{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:24px;margin:28px 0}
+.quiz-title{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text2);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.quiz-q{margin-bottom:20px}
+.quiz-question{font-size:0.93rem;font-weight:500;color:var(--text);margin-bottom:10px;line-height:1.5}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:9px 12px 9px 15px;cursor:pointer;margin-bottom:6px;border-left:2px solid transparent;border-radius:0 var(--r) var(--r) 0;background:transparent;border-top:none;border-right:none;border-bottom:none;transition:border-color 0.15s,background 0.15s;font-size:0.86rem;color:var(--text2);line-height:1.4}
+.quiz-option:hover{border-left-color:var(--border2);background:var(--bg3)}
+.quiz-option.correct{border-left-color:var(--emerald);background:rgba(16,185,129,0.06);color:var(--emerald2)}
+.quiz-option.wrong{border-left-color:var(--rose);background:transparent;color:var(--rose2)}
+.quiz-option input{accent-color:var(--indigo2);flex-shrink:0;margin-top:2px}
+.quiz-feedback{font-size:0.8rem;margin-top:8px;padding:7px 11px;border-radius:var(--r);display:none}
+.quiz-q.answered .quiz-feedback{display:block}
+.quiz-feedback.ok{background:rgba(16,185,129,0.1);color:var(--emerald2)}
+.quiz-feedback.fail{background:rgba(244,63,94,0.08);color:var(--rose2)}
+.sandbox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin:24px 0}
+.sandbox-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.sandbox-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;display:flex;align-items:center;gap:8px;color:var(--text2)}
+.live-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease infinite}
+.live-dot.sql-dot{background:var(--cyan2)}
+.live-dot.py-dot{background:var(--emerald2)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+.sandbox-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid;cursor:pointer;transition:all var(--ease);white-space:nowrap}
+.btn-sql{background:var(--cyan);border-color:var(--cyan);color:#000}
+.btn-sql:hover{filter:brightness(1.1)}
+.btn-py{background:var(--emerald);border-color:var(--emerald);color:#000}
+.btn-py:hover{filter:brightness(1.1)}
+.btn-ghost{background:transparent;border-color:var(--border2);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--indigo2);color:var(--indigo2)}
+.presets{display:flex;gap:6px;padding:9px 14px;border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap}
+.preset{font-size:0.68rem;padding:3px 10px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--text3);cursor:pointer;white-space:nowrap;font-family:inherit;transition:all var(--ease)}
+.preset:hover{border-color:var(--indigo2);color:var(--indigo2)}
+.sandbox-editor textarea{width:100%;min-height:160px;max-height:380px;background:var(--bg);color:var(--text);border:none;border-bottom:1px solid var(--border);padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;line-height:1.75;resize:vertical;outline:none;tab-size:2}
+.sandbox-editor textarea::placeholder{color:var(--text3)}
+.sandbox-result{padding:14px 18px;min-height:80px;max-height:320px;overflow-y:auto}
+.result-meta{font-size:0.7rem;color:var(--text3);margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.badge-ok{background:rgba(16,185,129,0.15);color:var(--emerald2);border:1px solid rgba(16,185,129,0.3);padding:2px 8px;border-radius:20px;font-size:0.65rem;font-weight:700}
+.badge-err{background:rgba(244,63,94,0.15);color:var(--rose2);border:1px solid rgba(244,63,94,0.3);padding:2px 8px;border-radius:20px;font-size:0.65rem;font-weight:700}
+.error-msg{color:var(--rose2);font-family:'JetBrains Mono',monospace;font-size:0.8rem;padding:12px 14px;background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.2);border-radius:var(--r)}
+.result-table-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border)}
+.result-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.78rem}
+.result-table th{background:var(--bg3);color:var(--cyan2);padding:7px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.result-table td{padding:6px 12px;border-bottom:1px solid var(--border);color:var(--text2)}
+.result-table tr:last-child td{border-bottom:none}
+.result-table tr:hover td{background:rgba(6,182,212,0.05)}
+.output-pane{padding:14px 18px;background:var(--bg);min-height:100px;max-height:360px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:0.8rem;line-height:1.65;white-space:pre-wrap;word-break:break-word;border-top:1px solid var(--border)}
+.output-pane .ph{color:var(--text3);font-style:italic}
+.output-pane .err{color:var(--rose2);background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.2);padding:8px 12px;border-radius:var(--r);margin-bottom:8px;white-space:pre-wrap}
+.output-pane .stdout{color:#c5d0ff}
+.output-pane img{max-width:100%;border-radius:var(--r);margin:8px 0;border:1px solid var(--border);background:var(--bg2)}
+.join-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:20px 0}
+.join-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center;cursor:pointer;transition:all var(--ease)}
+.join-card:hover,.join-card.active{border-color:var(--cyan2);background:rgba(6,182,212,0.06)}
+.join-diagram{width:110px;height:70px;margin:0 auto 10px}
+.join-name{font-size:0.8rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.join-desc{font-size:0.68rem;color:var(--text3)}
+#join-detail{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:22px;margin-top:8px;min-height:80px}
+.philosophy{background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(16,185,129,0.04));border:1px solid rgba(99,102,241,0.2);border-radius:var(--r2);padding:28px 32px;margin:0 0 32px}
+.phil-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--indigo2);margin-bottom:14px;letter-spacing:-0.3px}
+.phil-list{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.phil-list li{display:flex;align-items:flex-start;gap:10px;font-size:0.86rem;color:var(--text2);line-height:1.5;padding:10px 12px;background:var(--bg2);border-radius:var(--r);border:1px solid var(--border)}
+.phil-list li span.pi{font-size:1rem;flex-shrink:0}
+.skill-tree{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin:20px 0}
+.st-cell{background:var(--bg2);padding:14px 16px;font-size:0.78rem;color:var(--text2);line-height:1.5}
+.st-cell .st-head{font-weight:700;font-size:0.72rem;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+#menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;cursor:pointer;font-size:1rem;color:var(--text2)}
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99}
+@media(max-width:900px){
+  #menu-toggle{display:block}
+  #sidebar{transform:translateX(-100%);box-shadow:4px 0 24px rgba(0,0,0,0.5)}
+  #sidebar.open{transform:translateX(0)}
+  #sb-overlay.open{display:block}
+  #main{margin-left:0}
+  .chapter{padding:36px 20px 28px}
+  h1.ch-title{font-size:1.7rem}
+  h1.hero-title{font-size:2.2rem;letter-spacing:-1px}
+  .hero{padding:48px 28px}
+  .phil-list{grid-template-columns:1fr}
+}
+/* Issue 6: Scroll reveal */
+@media(prefers-reduced-motion:no-preference){
+  .chapter[data-reveal]{opacity:0;transform:translateY(16px);transition:opacity 0.45s ease,transform 0.45s ease}
+  .chapter[data-reveal].visible{opacity:1;transform:none}
+}
+/* Issue 12: Mark done animation — animation only via JS-added .done-anim class */
+@keyframes done-pop{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+.mark-btn.done{border-color:var(--emerald);color:var(--emerald2);background:rgba(16,185,129,0.08)}
+.mark-btn.done-anim{animation:done-pop 0.3s ease}
+/* Hero typewriter demo */
+.hero-demo{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r2);overflow:hidden;margin-top:32px;max-width:560px}
+.demo-bar{display:flex;align-items:center;gap:6px;padding:9px 14px;background:var(--bg3);border-bottom:1px solid var(--border2)}
+.demo-dot{width:10px;height:10px;border-radius:50%;background:var(--border2)}
+.demo-dot:nth-child(1){background:#f87171}
+.demo-dot:nth-child(2){background:var(--amber)}
+.demo-dot:nth-child(3){background:var(--emerald)}
+.demo-lang{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-left:auto}
+.demo-code{margin:0;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:0.82rem;line-height:1.75;color:var(--text2);min-height:140px;white-space:pre}
+.demo-cursor{display:inline-block;width:2px;height:1em;background:var(--indigo2);vertical-align:text-bottom;animation:blink 0.9s step-end infinite;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+/* Result table fade-in */
+.demo-result{margin-top:12px;border-top:1px solid var(--border);padding:14px 20px}
+.demo-result-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:8px}
+.demo-table{font-family:'JetBrains Mono',monospace;font-size:0.75rem;width:100%;border-collapse:collapse}
+.demo-table th{color:var(--cyan2);text-align:left;padding:4px 12px;border-bottom:1px solid var(--border);font-weight:500;font-size:0.7rem}
+.demo-table td{color:var(--text2);padding:4px 12px;border-bottom:1px solid var(--border)}
+.demo-table tr:last-child td{border-bottom:none}
+.demo-table .num-cell{color:var(--emerald2);text-align:right}
+.demo-result-row{opacity:0;transform:translateY(4px);transition:opacity 0.3s ease,transform 0.3s ease}
+.demo-result-row.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="global-banner" id="global-banner" role="alert">
+  <span id="global-banner-msg">⚠️ A sandbox failed to load. Some features may be unavailable. Try reloading the page.</span>
+  <button onclick="document.getElementById('global-banner').classList.remove('show')">✕ Dismiss</button>
+</div>
+
+<button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div id="sb-overlay" onclick="toggleSidebar()"></div>
+
+<nav id="sidebar">
+  <div class="sb-header">
+    <div class="sb-wordmark"><span class="dm">Data Mastery</span> <span class="os">OS</span></div>
+    <div class="sb-sub">Excel · SQL · Python · Data Science</div>
+    <div class="progress-bar-wrap">
+      <div class="pb-top">
+        <span class="pb-label">Mastery Progress</span>
+        <span class="pb-pct" id="pb-pct">0%</span>
+      </div>
+      <div class="pb-track"><div class="pb-fill" id="pb-fill"></div></div>
+      <div class="pb-sub" id="pb-sub">0 / 23 lessons complete <span class="pb-saved" id="pb-saved">✓ saved</span></div>
+    </div>
+  </div>
+  <div class="toc-scroll">
+    <div class="phase-group">
+      <div class="phase-label"><div class="phase-dot core"></div> Foundation</div>
+      <a class="toc-link" href="#hero" onclick="closeSidebar()"><span class="lnum">00</span> Start Here</a>
+      <a class="toc-link" id="tl-ph0" href="#ph0" onclick="closeSidebar()"><span class="lnum">★</span> Phase 0 · Data Thinking</a>
+    </div>
+    <div class="phase-group">
+      <div class="phase-label"><div class="phase-dot excel"></div> Phase 1 — Excel</div>
+      <a class="toc-link" id="tl-e1" href="#e1" onclick="closeSidebar()"><span class="lnum">01</span> Why Excel First</a>
+      <a class="toc-link" id="tl-e2" href="#e2" onclick="closeSidebar()"><span class="lnum">02</span> The Grid Mind</a>
+      <a class="toc-link" id="tl-e3" href="#e3" onclick="closeSidebar()"><span class="lnum">03</span> Power Formulas</a>
+      <a class="toc-link" id="tl-e4" href="#e4" onclick="closeSidebar()"><span class="lnum">04</span> Pivot Tables</a>
+    </div>
+    <div class="phase-group">
+      <div class="phase-label"><div class="phase-dot sql"></div> Phase 2 — SQL</div>
+      <a class="toc-link" id="tl-s1" href="#s1" onclick="closeSidebar()"><span class="lnum">05</span> Declarative Thinking</a>
+      <a class="toc-link" id="tl-s2" href="#s2" onclick="closeSidebar()"><span class="lnum">06</span> DDL & Schema Design</a>
+      <a class="toc-link" id="tl-s3" href="#s3" onclick="closeSidebar()"><span class="lnum">07</span> SELECT Mastery</a>
+      <a class="toc-link" id="tl-s4" href="#s4" onclick="closeSidebar()"><span class="lnum">08</span> JOINs Deep Dive</a>
+      <a class="toc-link" id="tl-s5" href="#s5" onclick="closeSidebar()"><span class="lnum">09</span> Aggregation & CTEs</a>
+      <a class="toc-link" id="tl-s6" href="#s6" onclick="closeSidebar()"><span class="lnum">10</span> Window Functions</a>
+      <a class="toc-link" id="tl-s7" href="#s7" onclick="closeSidebar()"><span class="lnum">11</span> Subqueries & Indexes</a>
+    </div>
+    <div class="phase-group">
+      <div class="phase-label"><div class="phase-dot python"></div> Phase 3 — Python</div>
+      <a class="toc-link" id="tl-p1" href="#p1" onclick="closeSidebar()"><span class="lnum">12</span> Python Thinking</a>
+      <a class="toc-link" id="tl-p2" href="#p2" onclick="closeSidebar()"><span class="lnum">13</span> NumPy — Vectorization</a>
+      <a class="toc-link" id="tl-p3" href="#p3" onclick="closeSidebar()"><span class="lnum">14</span> Pandas — Data Wrangling</a>
+      <a class="toc-link" id="tl-p4" href="#p4" onclick="closeSidebar()"><span class="lnum">15</span> Matplotlib & Seaborn</a>
+      <a class="toc-link" id="tl-p5" href="#p5" onclick="closeSidebar()"><span class="lnum">16</span> Scikit-learn ML</a>
+    </div>
+    <div class="phase-group">
+      <div class="phase-label"><div class="phase-dot ds"></div> Phase 4 — Data Science</div>
+      <a class="toc-link" id="tl-d1" href="#d1" onclick="closeSidebar()"><span class="lnum">17</span> Statistical Thinking</a>
+      <a class="toc-link" id="tl-d2" href="#d2" onclick="closeSidebar()"><span class="lnum">18</span> EDA Framework</a>
+      <a class="toc-link" id="tl-d3" href="#d3" onclick="closeSidebar()"><span class="lnum">19</span> Feature Engineering</a>
+      <a class="toc-link" id="tl-d4" href="#d4" onclick="closeSidebar()"><span class="lnum">20</span> Model Eval & Tuning</a>
+    </div>
+    <div class="phase-group">
+      <div class="phase-label"><div class="phase-dot project"></div> Phase 5 — Build</div>
+      <a class="toc-link" id="tl-r1" href="#r1" onclick="closeSidebar()"><span class="lnum">21</span> End-to-End Project</a>
+      <a class="toc-link" id="tl-r2" href="#r2" onclick="closeSidebar()"><span class="lnum">22</span> Dashboard + Storytelling</a>
+    </div>
+    <div class="phase-group" style="margin-top:8px">
+      <div class="phase-label"><div class="phase-dot core"></div> Live Labs</div>
+      <a class="toc-link" href="#lab-sql" onclick="closeSidebar()">🧪 SQL Sandbox</a>
+      <a class="toc-link" href="#lab-py" onclick="closeSidebar()">🐍 Python Sandbox</a>
+    </div>
+  </div>
+  <div class="sb-footer">
+    <button class="theme-btn" onclick="toggleTheme()"><span id="ti">☀️</span><span id="tl">Light</span></button>
+    <div class="streak-badge">🔥 <span id="streak">0</span> days</div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="chapter" id="hero" style="max-width:100%;padding:60px 64px 52px;border-bottom:1px solid var(--border);background:var(--bg2)">
+  <div style="max-width:860px;margin:0 auto">
+    <div class="hero-eyebrow">The Complete Mastery Roadmap</div>
+    <h1 class="hero-title">Become the best<br>data scientist in the room.</h1>
+    <p class="ch-hook">This isn't another course. It's a system. You'll learn how Excel teaches you to think in grids, SQL teaches you to think in sets, Python teaches you to think in loops and vectors — and then you'll combine all three into one unified intuition that makes data speak.</p>
+    <div class="hero-pills">
+      <span class="pill excel">Phase 1 · Excel</span>
+      <span class="pill sql">Phase 2 · SQL</span>
+      <span class="pill python">Phase 3 · Python</span>
+      <span class="pill ds">Phase 4 · Data Science</span>
+    </div>
+    <div class="hero-demo">
+      <div class="demo-bar">
+        <span class="demo-dot"></span>
+        <span class="demo-dot"></span>
+        <span class="demo-dot"></span>
+        <span class="demo-lang">SQL</span>
+      </div>
+      <pre class="demo-code" id="hero-type"><span class="demo-cursor"></span></pre>
+      <div class="demo-result" id="hero-result" style="display:none">
+        <div class="demo-result-label">Result — 4 rows</div>
+        <table class="demo-table">
+          <thead><tr><th>city</th><th style="text-align:right">orders</th><th style="text-align:right">avg_spend</th></tr></thead>
+          <tbody>
+            <tr class="demo-result-row"><td>Mumbai</td><td class="num-cell">47</td><td class="num-cell">₹3,840.00</td></tr>
+            <tr class="demo-result-row"><td>Bangalore</td><td class="num-cell">39</td><td class="num-cell">₹3,210.50</td></tr>
+            <tr class="demo-result-row"><td>Delhi</td><td class="num-cell">31</td><td class="num-cell">₹2,990.25</td></tr>
+            <tr class="demo-result-row"><td>Chennai</td><td class="num-cell">24</td><td class="num-cell">₹2,450.75</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="philosophy" style="margin-top:32px">
+      <div class="phil-title">My Teaching Philosophy — 8 Laws</div>
+      <ul class="phil-list">
+        <li><span class="pi">🧠</span><div><strong>Understand before you memorize.</strong> Every syntax has a reason. We learn the why first, then the how follows naturally.</div></li>
+        <li><span class="pi">🔗</span><div><strong>Connect everything to a mental model.</strong> Analogies aren't simplifications — they're the real learning happening.</div></li>
+        <li><span class="pi">🏗️</span><div><strong>Build while you learn.</strong> Every concept ships with a real mini-project. No passive reading.</div></li>
+        <li><span class="pi">⚡</span><div><strong>Speed is earned, not shortcut to.</strong> Master the fundamentals deeply. Speed comes from not thinking about syntax.</div></li>
+        <li><span class="pi">📊</span><div><strong>Data is just a story not yet told.</strong> Every dataset has a narrative. A great data scientist is a great storyteller first.</div></li>
+        <li><span class="pi">🔄</span><div><strong>The three tools are one tool.</strong> Excel + SQL + Python are not separate skills. They're three cameras pointing at the same world.</div></li>
+        <li><span class="pi">🐛</span><div><strong>Errors are the curriculum.</strong> Every bug you debug is a lesson that sticks forever. Don't fear the red text — follow it.</div></li>
+        <li><span class="pi">🔁</span><div><strong>Repetition is the technique.</strong> You don't understand a concept the first time. You understand it the fifth time, in a new context. We revisit deliberately.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 0: DATA THINKING -->
+<section class="chapter" id="ph0">
+  <div class="chapter-meta">
+    <span class="phase-tag" style="color:var(--indigo2);border-color:rgba(99,102,241,0.4);background:rgba(99,102,241,0.08)">Phase 0 · Foundation</span>
+    <span class="chapter-num" style="color:var(--text3);font-size:0.65rem">⏱ 20 min · Read First</span>
+    <button class="mark-btn" onclick="markDone('ph0',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Data Thinking — Before Any Tool</h1>
+  <p class="ch-hook">Every tool in this course — Excel, SQL, Python — is just a way of asking questions about data. Before you pick up any tool, you need to understand what data is, what it can tell you, and how humans turn raw numbers into decisions.</p>
+  <div class="callout why"><div class="callout-label">🎯 Learning Objectives</div><p>After this section you'll be able to: <strong>Distinguish</strong> structured from unstructured data · <strong>Identify</strong> the four types of analytics · <strong>Describe</strong> the full data lifecycle · <strong>Choose</strong> the right analysis type for any business question.</p></div>
+
+  <h2>What Is Data?</h2>
+  <p>Data is any recorded observation about the world. A temperature reading, a customer purchase, a "like" on a post — all data. The key distinctions you must know:</p>
+  <div class="concept-grid">
+    <div class="concept-card"><span class="cc-icon">📋</span><div class="cc-title">Structured</div><div class="cc-desc">Rows and columns. Tables in databases, spreadsheets. Easy to query. Examples: customer records, sales transactions.</div></div>
+    <div class="concept-card"><span class="cc-icon">🌐</span><div class="cc-title">Unstructured</div><div class="cc-desc">Free-form. Text, images, audio, video. 80% of the world's data. Harder to analyze but often more valuable.</div></div>
+    <div class="concept-card"><span class="cc-icon">🔢</span><div class="cc-title">Quantitative</div><div class="cc-desc">Numbers you can do math on. Revenue (₹4,200), age (34), temperature (22°C). Can be continuous or discrete.</div></div>
+    <div class="concept-card"><span class="cc-icon">🏷️</span><div class="cc-title">Categorical</div><div class="cc-desc">Labels, groups, buckets. City (Mumbai), status (pending/delivered), product category. Nominal or ordinal.</div></div>
+  </div>
+
+  <h2>The Data-to-Decision Chain</h2>
+  <div class="skill-tree" style="grid-template-columns:repeat(4,1fr)">
+    <div class="st-cell"><div class="st-head" style="color:var(--text3)">① Raw Data</div>Numbers, text, events. No meaning on its own. "4200", "Mumbai", "2024-01-05"</div>
+    <div class="st-cell"><div class="st-head" style="color:var(--cyan2)">② Information</div>Processed data with context. "Mumbai customer spent ₹4,200 on Jan 5."</div>
+    <div class="st-cell"><div class="st-head" style="color:var(--emerald2)">③ Knowledge</div>Patterns across information. "Mumbai customers spend 2× more than average."</div>
+    <div class="st-cell"><div class="st-head" style="color:var(--indigo2)">④ Decision</div>Action from knowledge. "Increase marketing budget for Mumbai by 40%."</div>
+  </div>
+
+  <h2>The Four Types of Analytics</h2>
+  <div class="table-wrap">
+    <table class="dtable">
+      <thead><tr><th>Type</th><th>Question it answers</th><th>Example</th><th>Tools</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Descriptive</strong></td><td>What happened?</td><td>"Revenue this month was ₹2.4M, down 8%"</td><td>Excel, SQL</td></tr>
+        <tr><td><strong>Diagnostic</strong></td><td>Why did it happen?</td><td>"Revenue dropped because returns spiked in Electronics"</td><td>SQL, Python</td></tr>
+        <tr><td><strong>Predictive</strong></td><td>What will happen?</td><td>"We forecast 12% growth next quarter"</td><td>Python + ML</td></tr>
+        <tr><td><strong>Prescriptive</strong></td><td>What should we do?</td><td>"Discount Electronics 15% to recover volume"</td><td>ML + Business</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout insight"><div class="callout-label">💡 Where Most Companies Are</div><p>Most companies are still stuck on descriptive analytics — dashboards that show what happened last month. The jump to diagnostic requires SQL + pattern thinking. Predictive needs Python + statistics. Prescriptive is the frontier — it requires everything plus business judgment. This course gets you through predictive.</p></div>
+
+  <h2>The Data Lifecycle — Know Your Stage</h2>
+  <p>Every data project follows this arc. Knowing which stage you're in determines which tool to use:</p>
+  <div class="concept-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="concept-card"><span class="cc-icon">📡</span><div class="cc-title">1. Collect</div><div class="cc-desc">Surveys, sensors, transactions, scraping. Data doesn't exist until something is recorded.</div></div>
+    <div class="concept-card"><span class="cc-icon">🗄️</span><div class="cc-title">2. Store</div><div class="cc-desc">Databases (SQL), data warehouses (BigQuery, Snowflake). Structure determines what questions you can later ask.</div></div>
+    <div class="concept-card"><span class="cc-icon">🧹</span><div class="cc-title">3. Clean</div><div class="cc-desc">Fix nulls, duplicates, wrong types, outliers. Real data is always messy. This takes 70% of your time.</div></div>
+    <div class="concept-card"><span class="cc-icon">🔍</span><div class="cc-title">4. Analyze</div><div class="cc-desc">EDA → model → validate. The "fun part" that only happens after cleaning.</div></div>
+    <div class="concept-card"><span class="cc-icon">📊</span><div class="cc-title">5. Visualize</div><div class="cc-desc">Charts, dashboards, reports. Transforms numbers into decisions by making patterns visible.</div></div>
+    <div class="concept-card"><span class="cc-icon">🚀</span><div class="cc-title">6. Deploy</div><div class="cc-desc">APIs, dashboards, automated reports. The insight reaches the person who needs to act on it.</div></div>
+  </div>
+  <div class="callout warning"><div class="callout-label">⚠️ The Biggest Beginner Mistake</div><p>Jumping straight to modeling. Data scientists who build great models on dirty data get wrong answers with high confidence — the most dangerous outcome in analytics. Clean first. Always.</p></div>
+</section>
+
+<!-- PHASE 1: EXCEL -->
+<section class="chapter" id="e1">
+  <div class="chapter-meta">
+    <span class="phase-tag excel">Phase 1 · Excel</span>
+    <span class="chapter-num">Lesson 01</span>
+    <button class="mark-btn" onclick="markDone('e1',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Why Excel First</h1>
+  <p class="ch-hook">"Why learn Excel if I want to be a data scientist?" Because Excel taught a billion people to think in tables. If you can't think in rows and columns, SQL and Pandas will always feel foreign.</p>
+  <div class="callout why">
+    <div class="callout-label">🎯 Learning Objectives · ⏱ 15 min</div>
+    <p>After this lesson you'll be able to: <strong>Explain</strong> why Excel is the right starting point · <strong>Map</strong> Excel concepts (cell, sheet, formula) to Python and SQL equivalents · <strong>Recognize</strong> when Excel is the right tool vs. when to upgrade.</p>
+  </div>
+  <h2>What Excel Actually Is</h2>
+  <p>Excel is a <strong>grid database with a formula language built in</strong>. Every cell is a variable. Every formula is a function. Every sheet is a table. When you understand this, Excel stops being a "spreadsheet app" and starts being a visual data engine.</p>
+  <div class="concept-grid">
+    <div class="concept-card"><span class="cc-icon">🔢</span><div class="cc-title">Cell = Variable</div><div class="cc-desc">A1 holds a value. You reference it by name, just like a variable in Python.</div></div>
+    <div class="concept-card"><span class="cc-icon">📋</span><div class="cc-title">Sheet = Table</div><div class="cc-desc">Each sheet is a structured table. Rows are records. Columns are fields. Same as SQL.</div></div>
+    <div class="concept-card"><span class="cc-icon">⚙️</span><div class="cc-title">Formula = Function</div><div class="cc-desc">=SUM(A1:A10) is literally calling a function with a range as input. That's programming.</div></div>
+    <div class="concept-card"><span class="cc-icon">🔄</span><div class="cc-title">Drag = Loop</div><div class="cc-desc">Dragging a formula down a column is the Excel equivalent of a for loop. Same idea.</div></div>
+  </div>
+  <div class="quiz">
+    <div class="quiz-title">⚡ Check Your Understanding</div>
+    <div class="quiz-q" id="qe1-1">
+      <div class="quiz-question">What is the Excel equivalent of a Python for loop?</div>
+      <label class="quiz-option"><input type="radio" name="qe1-1" value="a" onchange="checkQuiz('qe1-1','a','c')"> Using VLOOKUP across a range</label>
+      <label class="quiz-option"><input type="radio" name="qe1-1" value="b" onchange="checkQuiz('qe1-1','b','c')"> Pressing Ctrl+Z repeatedly</label>
+      <label class="quiz-option"><input type="radio" name="qe1-1" value="c" onchange="checkQuiz('qe1-1','c','c')"> Dragging a formula down a column</label>
+      <label class="quiz-option"><input type="radio" name="qe1-1" value="d" onchange="checkQuiz('qe1-1','d','c')"> Sorting a column</label>
+      <div class="quiz-feedback" id="qe1-1-fb"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="e2">
+  <div class="chapter-meta">
+    <span class="phase-tag excel">Phase 1 · Excel</span>
+    <span class="chapter-num">Lesson 02</span>
+    <button class="mark-btn" onclick="markDone('e2',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">The Grid Mind</h1>
+  <p class="ch-hook">Before formulas, master the structure. The difference between a messy spreadsheet and a powerful one is the person's understanding of what data actually is.</p>
+  <h2>Tidy Data: The One Rule</h2>
+  <p>A tidy dataset has: <strong>one row per observation, one column per variable, one table per type of data.</strong> This rule alone makes 80% of your analysis easier.</p>
+  <div class="callout warning"><div class="callout-label">⚠️ The Most Common Mistake</div><p>Storing data horizontally (months as columns) instead of vertically (Month as a column with values). This breaks every formula, every pivot, every chart. Always go vertical.</p></div>
+  <div class="table-wrap">
+    <table class="dtable">
+      <thead><tr><th>❌ Bad Structure</th><th>✅ Good Structure (Tidy)</th></tr></thead>
+      <tbody>
+        <tr><td>Name | Jan | Feb | Mar</td><td>Name | Month | Revenue</td></tr>
+        <tr><td>Alice | 100 | 120 | 90</td><td>Alice | Jan | 100</td></tr>
+        <tr><td>Bob | 80 | 95 | 110</td><td>Alice | Feb | 120</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h2>Absolute vs Relative References</h2>
+  <p>This is the single most important concept in Excel. When you copy a formula, Excel moves the references relative to where you paste. Lock them with <code>$</code> when you don't want that.</p>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang excel">Excel Formulas</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="xl-fn">=A1</span>          <span class="cm">// Relative: moves when copied</span>
+<span class="xl-fn">=$A$1</span>        <span class="cm">// Absolute: locked, never moves</span>
+<span class="xl-fn">=$A1</span>         <span class="cm">// Mixed: column locked, row moves</span>
+<span class="xl-fn">=A$1</span>         <span class="cm">// Mixed: row locked, column moves</span>
+<span class="cm">// Calculating % of total — $B$12 is the total cell</span>
+<span class="xl-fn">=B2/$B$12</span></code></pre>
+  </div>
+</section>
+
+<section class="chapter" id="e3">
+  <div class="chapter-meta">
+    <span class="phase-tag excel">Phase 1 · Excel</span>
+    <span class="chapter-num">Lesson 03</span>
+    <button class="mark-btn" onclick="markDone('e3',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Power Formulas</h1>
+  <p class="ch-hook">Most people know SUM and AVERAGE. The people who get hired know XLOOKUP, INDEX-MATCH, SUMIFS, and array formulas. Here's the full arsenal.</p>
+  <h2>The Lookup Family</h2>
+  <div class="callout analogy"><div class="callout-label">🔍 The Lookup Analogy</div><p>VLOOKUP is like searching a phone book: you find the name, then read across. XLOOKUP is like asking a smart assistant — you describe what you want and it finds it in any direction.</p></div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang excel">Excel</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="cm">// VLOOKUP — the old way (still everywhere)</span>
+<span class="xl-fn">=VLOOKUP</span>(<span class="xl-ref">A2</span>, <span class="xl-ref">Products!A:C</span>, <span class="xl-num">3</span>, <span class="xl-op">FALSE</span>)
+<span class="cm">// XLOOKUP — the modern way</span>
+<span class="xl-fn">=XLOOKUP</span>(<span class="xl-ref">A2</span>, <span class="xl-ref">Products!A:A</span>, <span class="xl-ref">Products!C:C</span>, <span class="xl-str">"Not found"</span>)
+<span class="cm">// INDEX-MATCH — the power user combo</span>
+<span class="xl-fn">=INDEX</span>(<span class="xl-ref">C:C</span>, <span class="xl-fn">MATCH</span>(<span class="xl-ref">A2</span>, <span class="xl-ref">A:A</span>, <span class="xl-num">0</span>))
+</code></pre>
+  </div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang excel">Conditional Aggregation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="cm">// SUMIFS — multiple conditions (the real one)</span>
+<span class="xl-fn">=SUMIFS</span>(<span class="xl-ref">C:C</span>, <span class="xl-ref">B:B</span>, <span class="xl-str">"North"</span>, <span class="xl-ref">D:D</span>, <span class="xl-str">"2024"</span>)
+<span class="cm">// COUNTIFS — count with multiple conditions</span>
+<span class="xl-fn">=COUNTIFS</span>(<span class="xl-ref">B:B</span>, <span class="xl-str">"North"</span>, <span class="xl-ref">C:C</span>, <span class="xl-str">">"&amp;1000</span>)</code></pre>
+  </div>
+  <div class="callout insight"><div class="callout-label">💡 The SQL Connection</div><p><code>SUMIFS</code> is exactly <code>SELECT SUM(C) FROM table WHERE B='North' AND D='2024'</code>. Once you see this, moving between Excel and SQL becomes natural.</p></div>
+  <div class="quiz"><div class="quiz-title">⚡ Formula Quiz</div>
+    <div class="quiz-q" id="qe3-1">
+      <div class="quiz-question">You want to sum sales where Region='East' AND Product='Laptop'. Which function do you use?</div>
+      <label class="quiz-option"><input type="radio" name="qe3-1" value="a" onchange="checkQuiz('qe3-1','a','d')"> SUMIF</label>
+      <label class="quiz-option"><input type="radio" name="qe3-1" value="b" onchange="checkQuiz('qe3-1','b','d')"> VLOOKUP</label>
+      <label class="quiz-option"><input type="radio" name="qe3-1" value="c" onchange="checkQuiz('qe3-1','c','d')"> SUM + IF</label>
+      <label class="quiz-option"><input type="radio" name="qe3-1" value="d" onchange="checkQuiz('qe3-1','d','d')"> SUMIFS (multiple conditions)</label>
+      <div class="quiz-feedback" id="qe3-1-fb"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="e4">
+  <div class="chapter-meta">
+    <span class="phase-tag excel">Phase 1 · Excel</span>
+    <span class="chapter-num">Lesson 04</span>
+    <button class="mark-btn" onclick="markDone('e4',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Pivot Tables — Your First Aggregation Engine</h1>
+  <p class="ch-hook">A Pivot Table is a drag-and-drop GROUP BY. When you master it, you'll understand aggregation so deeply that SQL's GROUP BY will feel like you already know it.</p>
+  <div class="callout analogy"><div class="callout-label">🔄 The Pivot Mental Model</div><p>Rows: what you're grouping by. Columns: a secondary grouping. Values: what you're aggregating (SUM, COUNT, AVG). Filters: what to exclude. This is exactly GROUP BY + HAVING in SQL.</p></div>
+  <div class="callout project"><div class="callout-label">🚀 Mini Project — Sales Analysis Dashboard</div><p>Download any free sales dataset (Kaggle: "Superstore Sales"). Build: (1) Total revenue by Category, (2) Monthly trend line, (3) Top 10 customers table. Format it. Present it. This is your first portfolio artifact.</p></div>
+</section>
+
+<!-- PHASE 2: SQL -->
+<section class="chapter" id="s1">
+  <div class="chapter-meta">
+    <span class="phase-tag sql">Phase 2 · SQL</span>
+    <span class="chapter-num">Lesson 05</span>
+    <button class="mark-btn" onclick="markDone('s1',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Declarative Thinking</h1>
+  <p class="ch-hook">SQL is the only major language where you describe the <em>what</em>, not the <em>how</em>. This single idea is the key to thinking in SQL. Stop thinking about steps. Think about the shape of your result.</p>
+  <div class="callout analogy"><div class="callout-label">📖 The Librarian Analogy</div><p>You don't tell a librarian which shelf to walk to, which index to look in, which direction to turn. You say "I want all crime novels from 2020 with over 4 stars." The database optimizer is the librarian. Your job: describe the result.</p></div>
+  <h2>SQL vs Excel vs Python — Three Lenses</h2>
+  <div class="skill-tree">
+    <div class="st-cell"><div class="st-head" style="color:var(--amber2)">📊 Excel</div>Visual, cell-by-cell. Great for exploration, dashboards, quick answers. Works best under ~100k rows.</div>
+    <div class="st-cell"><div class="st-head" style="color:var(--cyan2)">🗄️ SQL</div>Set-based, declarative. Great for querying millions of rows in databases. Where 90% of business data lives.</div>
+    <div class="st-cell"><div class="st-head" style="color:var(--emerald2)">🐍 Python</div>Procedural + vectorized. Great for complex transformations, ML, automation. Works anywhere.</div>
+  </div>
+  <div class="quiz"><div class="quiz-title">⚡ SQL Thinking Quiz</div>
+    <div class="quiz-q" id="qs1-1">
+      <div class="quiz-question">SQL is called "declarative" because you tell the database:</div>
+      <label class="quiz-option"><input type="radio" name="qs1-1" value="a" onchange="checkQuiz('qs1-1','a','c')"> How to loop through each row and check conditions</label>
+      <label class="quiz-option"><input type="radio" name="qs1-1" value="b" onchange="checkQuiz('qs1-1','b','c')"> Which index to use for the fastest lookup</label>
+      <label class="quiz-option"><input type="radio" name="qs1-1" value="c" onchange="checkQuiz('qs1-1','c','c')"> What result you want, and the engine figures out how</label>
+      <label class="quiz-option"><input type="radio" name="qs1-1" value="d" onchange="checkQuiz('qs1-1','d','c')"> Which tables to cache in memory first</label>
+      <div class="quiz-feedback" id="qs1-1-fb"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="s2">
+  <div class="chapter-meta">
+    <span class="phase-tag sql">Phase 2 · SQL</span>
+    <span class="chapter-num">Lesson 06</span>
+    <button class="mark-btn" onclick="markDone('s2',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">DDL & Schema Design</h1>
+  <p class="ch-hook">Data Definition Language is how you blueprint a database. The schema decisions you make upfront determine how fast and clean your queries will be forever after. Think like an architect, not a plumber.</p>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang sql">SQL — DDL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="kw">CREATE TABLE</span> <span class="tbl">customers</span> (
+    customer_id   <span class="fn">INTEGER</span>      <span class="kw">PRIMARY KEY</span>,
+    name          <span class="fn">TEXT</span>         <span class="kw">NOT NULL</span>,
+    email         <span class="fn">TEXT</span>         <span class="kw">UNIQUE NOT NULL</span>,
+    city          <span class="fn">TEXT</span>,
+    signup_date   <span class="fn">DATE</span>         <span class="kw">DEFAULT</span> <span class="fn">CURRENT_DATE</span>
+);
+<span class="kw">CREATE TABLE</span> <span class="tbl">orders</span> (
+    order_id      <span class="fn">INTEGER</span>      <span class="kw">PRIMARY KEY</span>,
+    customer_id   <span class="fn">INTEGER</span>      <span class="kw">REFERENCES</span> <span class="tbl">customers</span>(customer_id),
+    total_amount  <span class="fn">DECIMAL</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">NOT NULL</span>,
+    order_date    <span class="fn">DATE</span>         <span class="kw">DEFAULT</span> <span class="fn">CURRENT_DATE</span>
+);</code></pre>
+  </div>
+  <div class="callout warning"><div class="callout-label">⚠️ Never Store Money as FLOAT</div><p>Floating point arithmetic is imprecise. <code>0.1 + 0.2 = 0.30000000000000004</code>. Always use <code>DECIMAL(10,2)</code> or store prices in cents as <code>INTEGER</code>.</p></div>
+</section>
+
+<section class="chapter" id="s3">
+  <div class="chapter-meta">
+    <span class="phase-tag sql">Phase 2 · SQL</span>
+    <span class="chapter-num">Lesson 07</span>
+    <button class="mark-btn" onclick="markDone('s3',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">SELECT Mastery</h1>
+  <p class="ch-hook">SELECT is deceptively simple. Every complex query you'll ever write is built from the same six clauses. Learn them in execution order, not written order, and everything clicks.</p>
+  <div class="table-wrap">
+    <table class="dtable">
+      <thead><tr><th>Step</th><th>Clause</th><th>What it does</th><th>Excel equivalent</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><code>FROM</code></td><td>Choose the table(s) to work with</td><td>Select your sheet</td></tr>
+        <tr><td>2</td><td><code>WHERE</code></td><td>Filter rows before aggregating</td><td>Filter / SUMIFS criteria</td></tr>
+        <tr><td>3</td><td><code>GROUP BY</code></td><td>Collapse rows into groups</td><td>Pivot Table Rows</td></tr>
+        <tr><td>4</td><td><code>HAVING</code></td><td>Filter groups after aggregating</td><td>Pivot Table filter on values</td></tr>
+        <tr><td>5</td><td><code>SELECT</code></td><td>Choose which columns to return</td><td>Choose which Pivot columns</td></tr>
+        <tr><td>6</td><td><code>ORDER BY</code></td><td>Sort the final result</td><td>Sort in Pivot/filter</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout insight"><div class="callout-label">💡 The Key Insight</div><p><code>WHERE</code> filters rows before grouping. <code>HAVING</code> filters groups after aggregating. This is why you can't use <code>WHERE revenue > 1000</code> when revenue is a SUM — you need <code>HAVING</code>.</p></div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang sql">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="cm">-- The full SELECT template</span>
+<span class="kw">SELECT</span> city, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> total_orders, <span class="fn">SUM</span>(total_amount) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> <span class="tbl">customers</span> c <span class="kw">JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> c.customer_id = o.customer_id
+<span class="kw">WHERE</span> o.order_date >= <span class="str">'2024-01-01'</span>
+<span class="kw">GROUP BY</span> city
+<span class="kw">HAVING</span> <span class="fn">SUM</span>(total_amount) > <span class="num">500</span>
+<span class="kw">ORDER BY</span> revenue <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="num">10</span>;</code></pre>
+  </div>
+</section>
+
+<section class="chapter" id="s4">
+  <div class="chapter-meta">
+    <span class="phase-tag sql">Phase 2 · SQL</span>
+    <span class="chapter-num">Lesson 08</span>
+    <button class="mark-btn" onclick="markDone('s4',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">JOINs — The Art of Combining Tables</h1>
+  <p class="ch-hook">Normalized databases split data across tables. JOINs are how you put it back together. Most real-world SQL queries you'll write professionally involve at least two JOINs.</p>
+  <div class="join-grid">
+    <div class="join-card active" onclick="showJoin('inner')" id="jcard-inner">
+      <svg class="join-diagram" viewBox="0 0 110 70"><circle cx="38" cy="35" r="24" fill="rgba(6,182,212,0.12)" stroke="rgba(6,182,212,0.5)" stroke-width="1.5"/><circle cx="72" cy="35" r="24" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.5)" stroke-width="1.5"/><clipPath id="ic"><circle cx="72" cy="35" r="24"/></clipPath><circle cx="38" cy="35" r="24" fill="rgba(99,182,212,0.6)" clip-path="url(#ic)"/></svg>
+      <div class="join-name">INNER JOIN</div><div class="join-desc">Matches only</div>
+    </div>
+    <div class="join-card" onclick="showJoin('left')" id="jcard-left">
+      <svg class="join-diagram" viewBox="0 0 110 70"><circle cx="38" cy="35" r="24" fill="rgba(6,182,212,0.6)" stroke="rgba(6,182,212,0.8)" stroke-width="1.5"/><circle cx="72" cy="35" r="24" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.5)" stroke-width="1.5"/><clipPath id="lc"><circle cx="72" cy="35" r="24"/></clipPath><circle cx="38" cy="35" r="24" fill="rgba(6,182,212,0.4)" clip-path="url(#lc)"/></svg>
+      <div class="join-name">LEFT JOIN</div><div class="join-desc">All left + matches</div>
+    </div>
+    <div class="join-card" onclick="showJoin('full')" id="jcard-full">
+      <svg class="join-diagram" viewBox="0 0 110 70"><circle cx="38" cy="35" r="24" fill="rgba(6,182,212,0.4)" stroke="rgba(6,182,212,0.6)" stroke-width="1.5"/><circle cx="72" cy="35" r="24" fill="rgba(99,102,241,0.4)" stroke="rgba(99,102,241,0.6)" stroke-width="1.5"/></svg>
+      <div class="join-name">FULL OUTER</div><div class="join-desc">Everything</div>
+    </div>
+    <div class="join-card" onclick="showJoin('self')" id="jcard-self">
+      <svg class="join-diagram" viewBox="0 0 110 70"><circle cx="55" cy="28" r="18" fill="rgba(139,92,246,0.3)" stroke="rgba(139,92,246,0.6)" stroke-width="1.5"/><circle cx="55" cy="48" r="18" fill="rgba(139,92,246,0.3)" stroke="rgba(139,92,246,0.6)" stroke-width="1.5"/><clipPath id="sc"><circle cx="55" cy="48" r="18"/></clipPath><circle cx="55" cy="28" r="18" fill="rgba(139,92,246,0.5)" clip-path="url(#sc)"/></svg>
+      <div class="join-name">SELF JOIN</div><div class="join-desc">Table joins itself</div>
+    </div>
+  </div>
+  <div id="join-detail">
+    <h3 style="margin-top:0;color:var(--cyan2)">INNER JOIN — The Most Common</h3>
+    <p style="color:var(--text2)">Only returns rows where the join condition matches in both tables. Use this when you only want records that exist on both sides.</p>
+    <div class="code-wrap" style="margin:12px 0 0">
+      <div class="code-header"><span class="code-lang sql">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="kw">SELECT</span> c.name, o.order_id, o.total_amount
+<span class="kw">FROM</span> <span class="tbl">customers</span> c
+<span class="kw">INNER JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="s5">
+  <div class="chapter-meta">
+    <span class="phase-tag sql">Phase 2 · SQL</span>
+    <span class="chapter-num">Lesson 09</span>
+    <button class="mark-btn" onclick="markDone('s5',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Aggregation & CTEs</h1>
+  <p class="ch-hook">CTEs (Common Table Expressions) are the most important readability tool in SQL. They let you break a complex query into named steps — like functions in code.</p>
+  <div class="callout analogy"><div class="callout-label">🧩 The Lego Analogy</div><p>A CTE is like naming a Lego piece before using it. Instead of "that blue 4x2 brick with the flat top," you say "the base." Then you build with named pieces. Your query becomes a readable story.</p></div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang sql">SQL — CTEs</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="cm">-- Step 1: Find high-value customers</span>
+<span class="kw">WITH</span> high_spenders <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> customer_id, <span class="fn">SUM</span>(total_amount) <span class="kw">AS</span> lifetime_value, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> order_count
+    <span class="kw">FROM</span> <span class="tbl">orders</span>
+    <span class="kw">GROUP BY</span> customer_id
+    <span class="kw">HAVING</span> <span class="fn">SUM</span>(total_amount) > <span class="num">1000</span>
+),
+<span class="cm">-- Step 2: Get their details</span>
+enriched <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> c.name, c.city, hs.lifetime_value, hs.order_count
+    <span class="kw">FROM</span> <span class="tbl">customers</span> c <span class="kw">JOIN</span> high_spenders hs <span class="kw">USING</span>(customer_id)
+)
+<span class="cm">-- Step 3: Final output</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> enriched <span class="kw">ORDER BY</span> lifetime_value <span class="kw">DESC</span>;</code></pre>
+  </div>
+</section>
+
+<section class="chapter" id="s6">
+  <div class="chapter-meta">
+    <span class="phase-tag sql">Phase 2 · SQL</span>
+    <span class="chapter-num">Lesson 10</span>
+    <button class="mark-btn" onclick="markDone('s6',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Window Functions — The Pro's Tool</h1>
+  <p class="ch-hook">Window functions let you do aggregations without collapsing rows. They see the context around each row. Once you learn them, you'll use them in 80% of your serious queries.</p>
+  <div class="callout analogy"><div class="callout-label">🎥 The Camera Analogy</div><p>A window function is a camera that moves through the dataset frame by frame. For each row, it can see both the current row AND nearby rows. GROUP BY collapses everything into one frame. Window functions keep every frame.</p></div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang sql">SQL — Window Functions</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="cm">-- Rank customers by revenue within each city</span>
+<span class="kw">SELECT</span> c.name, c.city, <span class="fn">SUM</span>(o.total_amount) <span class="kw">AS</span> revenue,
+    <span class="fn">RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.city <span class="kw">ORDER BY</span> <span class="fn">SUM</span>(o.total_amount) <span class="kw">DESC</span>) <span class="kw">AS</span> city_rank,
+    <span class="fn">SUM</span>(<span class="fn">SUM</span>(o.total_amount)) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.city) <span class="kw">AS</span> city_total,
+    <span class="fn">LAG</span>(<span class="fn">SUM</span>(o.total_amount)) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> o.order_date) <span class="kw">AS</span> prev_month
+<span class="kw">FROM</span> <span class="tbl">customers</span> c <span class="kw">JOIN</span> <span class="tbl">orders</span> o <span class="kw">USING</span>(customer_id)
+<span class="kw">GROUP BY</span> c.customer_id, c.name, c.city, o.order_date;</code></pre>
+  </div>
+</section>
+
+<!-- PHASE 3: PYTHON -->
+<section class="chapter" id="s7">
+  <div class="chapter-meta">
+    <span class="phase-tag sql">Phase 2 · SQL</span>
+    <span class="chapter-num">Lesson 11</span>
+    <button class="mark-btn" onclick="markDone('s7',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Subqueries & Indexes</h1>
+  <p class="ch-hook">Subqueries let you use a query's result as a table or a value inside another query. Indexes make that query run in milliseconds instead of minutes. Together, they're the tools that separate weekend SQL from production SQL.</p>
+  <div class="callout analogy"><div class="callout-label">📚 The Book Index Analogy</div><p>A database index is like the index at the back of a textbook. Without it, finding "GROUP BY" means reading every single page. With it, you jump directly to page 142. An index trades storage space for lookup speed. Add them on columns you frequently filter or join on.</p></div>
+  <h2>Subquery Patterns</h2>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang sql">SQL — Subqueries</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="cm">-- Scalar subquery: single value as a filter threshold</span>
+<span class="kw">SELECT</span> name, total_amount
+<span class="kw">FROM</span> <span class="tbl">orders</span>
+<span class="kw">WHERE</span> total_amount > (<span class="kw">SELECT</span> <span class="fn">AVG</span>(total_amount) <span class="kw">FROM</span> <span class="tbl">orders</span>);
+
+<span class="cm">-- IN subquery: filter against a result set</span>
+<span class="kw">SELECT</span> name, city
+<span class="kw">FROM</span> <span class="tbl">customers</span>
+<span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (
+    <span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> <span class="tbl">orders</span>
+    <span class="kw">WHERE</span> total_amount > <span class="num">500</span>
+);
+
+<span class="cm">-- EXISTS: efficient alternative to IN for large sets</span>
+<span class="kw">SELECT</span> c.name
+<span class="kw">FROM</span> <span class="tbl">customers</span> c
+<span class="kw">WHERE EXISTS</span> (
+    <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> <span class="tbl">orders</span> o
+    <span class="kw">WHERE</span> o.customer_id = c.customer_id
+    <span class="kw">AND</span> o.total_amount > <span class="num">1000</span>
+);</code></pre>
+  </div>
+  <h2>Creating Indexes</h2>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang sql">SQL — Indexes</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="cm">-- Single-column index: speed up WHERE city = '...'</span>
+<span class="kw">CREATE INDEX</span> idx_customers_city <span class="kw">ON</span> <span class="tbl">customers</span>(city);
+
+<span class="cm">-- Composite index: speed up WHERE city='...' AND signup_date > '...'</span>
+<span class="kw">CREATE INDEX</span> idx_customers_city_date <span class="kw">ON</span> <span class="tbl">customers</span>(city, signup_date);
+
+<span class="cm">-- Always index foreign keys — they're used in JOINs constantly</span>
+<span class="kw">CREATE INDEX</span> idx_orders_customer <span class="kw">ON</span> <span class="tbl">orders</span>(customer_id);</code></pre>
+  </div>
+  <div class="callout warning"><div class="callout-label">⚠️ Index Trade-offs</div><p>Indexes speed up reads but slow down writes (INSERT/UPDATE/DELETE must update the index too). Don't index every column. Index the columns that appear most in WHERE clauses and JOIN conditions. A table with 20 indexes writes 20× slower.</p></div>
+</section>
+
+<!-- PHASE 3: PYTHON -->
+<section class="chapter" id="p1">
+  <div class="chapter-meta">
+    <span class="phase-tag python">Phase 3 · Python</span>
+    <span class="chapter-num">Lesson 11</span>
+    <button class="mark-btn" onclick="markDone('p1',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Python Thinking</h1>
+  <p class="ch-hook">Python didn't beat R for data science because it's faster. It won because it's a real general-purpose language. You can scrape data, clean it, model it, build an API, and deploy a dashboard — all in one ecosystem.</p>
+  <div class="concept-grid">
+    <div class="concept-card"><span class="cc-icon">⚡</span><div class="cc-title">NumPy</div><div class="cc-desc">The engine. N-dimensional arrays, C-speed math. Everything else is built on this.</div></div>
+    <div class="concept-card"><span class="cc-icon">🐼</span><div class="cc-title">Pandas</div><div class="cc-desc">DataFrames. Excel-like tables in code. The most-used data tool in Python.</div></div>
+    <div class="concept-card"><span class="cc-icon">📈</span><div class="cc-title">Matplotlib/Seaborn</div><div class="cc-desc">Visualization. Matplotlib is the base. Seaborn is the beautiful layer on top.</div></div>
+    <div class="concept-card"><span class="cc-icon">🤖</span><div class="cc-title">Scikit-learn</div><div class="cc-desc">Machine learning. Unified API: fit, predict, transform. 50+ algorithms.</div></div>
+  </div>
+</section>
+
+<section class="chapter" id="p2">
+  <div class="chapter-meta">
+    <span class="phase-tag python">Phase 3 · Python</span>
+    <span class="chapter-num">Lesson 12</span>
+    <button class="mark-btn" onclick="markDone('p2',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">NumPy — The Speed Engine</h1>
+  <p class="ch-hook">A pure Python loop over 1 million numbers takes ~100ms. The same operation in NumPy takes ~1ms. This isn't a small improvement. It changes what's possible.</p>
+  <div class="callout analogy"><div class="callout-label">🍕 The Food Processor Analogy</div><p>Python loops are a chef chopping vegetables one by one. NumPy is a food processor — the entire batch, simultaneously, in C. Vectorization means "apply to all at once."</p></div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — NumPy</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">import</span> numpy <span class="py-kw">as</span> np
+arr = np.<span class="py-fn">array</span>([<span class="py-num">1</span>, <span class="py-num">2</span>, <span class="py-num">3</span>, <span class="py-num">4</span>, <span class="py-num">5</span>])
+<span class="py-fn">print</span>(arr * <span class="py-num">2</span>)         <span class="cm"># [2, 4, 6, 8, 10]</span>
+<span class="py-fn">print</span>(arr[arr > <span class="py-num">3</span>])    <span class="cm"># boolean indexing: [4, 5]</span>
+a = np.<span class="py-fn">array</span>([[<span class="py-num">1</span>],[<span class="py-num">2</span>],[<span class="py-num">3</span>]])
+b = np.<span class="py-fn">array</span>([<span class="py-num">10</span>,<span class="py-num">20</span>,<span class="py-num">30</span>])
+<span class="py-fn">print</span>(a + b)  <span class="cm"># broadcasting — shape (3,3)</span></code></pre>
+  </div>
+</section>
+
+<section class="chapter" id="p3">
+  <div class="chapter-meta">
+    <span class="phase-tag python">Phase 3 · Python</span>
+    <span class="chapter-num">Lesson 13</span>
+    <button class="mark-btn" onclick="markDone('p3',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Pandas — The Data Wrangler</h1>
+  <p class="ch-hook">Pandas is SQL + Excel in Python. A DataFrame is a table. Series is a column. Every operation you know from SQL maps directly to Pandas. This is where you spend 60% of your time as a data scientist.</p>
+  <div class="callout analogy"><div class="callout-label">🔭 Three Lenses — One Operation</div><p>The single most important insight in this course: Excel, SQL, and Python are all solving the same problems with different syntax. Every time you learn something new, find its equivalent in the other two tools.</p></div>
+  <div class="table-wrap">
+    <table class="dtable">
+      <thead><tr><th>Task</th><th>📊 Excel</th><th>🗄️ SQL</th><th>🐍 Pandas</th></tr></thead>
+      <tbody>
+        <tr><td>Select columns</td><td>Click column header</td><td><code>SELECT col FROM t</code></td><td><code>df['col']</code></td></tr>
+        <tr><td>Filter rows</td><td>Filter / SUMIFS</td><td><code>WHERE condition</code></td><td><code>df[df['col'] > 0]</code></td></tr>
+        <tr><td>Sum by group</td><td>Pivot Table → Values: SUM</td><td><code>GROUP BY + SUM()</code></td><td><code>df.groupby('col').sum()</code></td></tr>
+        <tr><td>Combine tables</td><td>XLOOKUP / VLOOKUP</td><td><code>JOIN ON key</code></td><td><code>pd.merge(df1, df2, on='key')</code></td></tr>
+        <tr><td>Sort</td><td>Data → Sort</td><td><code>ORDER BY col DESC</code></td><td><code>df.sort_values('col')</code></td></tr>
+        <tr><td>Top N rows</td><td>Filter by rank</td><td><code>LIMIT 10</code></td><td><code>df.head(10)</code></td></tr>
+        <tr><td>Missing values</td><td>Filter blanks</td><td><code>WHERE col IS NULL</code></td><td><code>df[df['col'].isna()]</code></td></tr>
+        <tr><td>Remove duplicates</td><td>Data → Remove Duplicates</td><td><code>SELECT DISTINCT</code></td><td><code>df.drop_duplicates()</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — Pandas</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">import</span> pandas <span class="py-kw">as</span> pd
+df = pd.<span class="py-fn">read_csv</span>(<span class="py-str">'sales.csv'</span>)
+df.<span class="py-fn">info</span>(); df.<span class="py-fn">describe</span>(); df.<span class="py-fn">isnull</span>().<span class="py-fn">sum</span>()
+df = df.<span class="py-fn">dropna</span>(subset=[<span class="py-str">'revenue'</span>])
+df[<span class="py-str">'date'</span>] = pd.<span class="py-fn">to_datetime</span>(df[<span class="py-str">'date'</span>])
+top = df[df[<span class="py-str">'revenue'</span>] > <span class="py-num">1000</span>]
+by_region = df.<span class="py-fn">groupby</span>(<span class="py-str">'region'</span>).<span class="py-fn">agg</span>({<span class="py-str">'revenue'</span>:[<span class="py-str">'sum'</span>,<span class="py-str">'mean'</span>],<span class="py-str">'orders'</span>:<span class="py-str">'nunique'</span>})
+merged = pd.<span class="py-fn">merge</span>(customers, orders, on=<span class="py-str">'customer_id'</span>, how=<span class="py-str">'left'</span>)</code></pre>
+  </div>
+  <div class="quiz"><div class="quiz-title">⚡ Pandas Quiz</div>
+    <div class="quiz-q" id="qp3-1">
+      <div class="quiz-question">What is the Pandas equivalent of <code>SELECT SUM(revenue) FROM df WHERE region='North' GROUP BY product</code>?</div>
+      <label class="quiz-option"><input type="radio" name="qp3-1" value="a" onchange="checkQuiz('qp3-1','a','c')"> <code>df.sum('revenue')</code></label>
+      <label class="quiz-option"><input type="radio" name="qp3-1" value="b" onchange="checkQuiz('qp3-1','b','c')"> <code>df['revenue'].groupby('product')</code></label>
+      <label class="quiz-option"><input type="radio" name="qp3-1" value="c" onchange="checkQuiz('qp3-1','c','c')"> <code>df[df['region']=='North'].groupby('product')['revenue'].sum()</code></label>
+      <label class="quiz-option"><input type="radio" name="qp3-1" value="d" onchange="checkQuiz('qp3-1','d','c')"> <code>df.filter('region','North').sum()</code></label>
+      <div class="quiz-feedback" id="qp3-1-fb"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="p4">
+  <div class="chapter-meta">
+    <span class="phase-tag python">Phase 3 · Python</span>
+    <span class="chapter-num">Lesson 14</span>
+    <button class="mark-btn" onclick="markDone('p4',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Matplotlib & Seaborn — Visual Storytelling</h1>
+  <p class="ch-hook">A chart that requires explanation has failed. A great visualization is a story that explains itself. Learn these not just as APIs but as communication tools.</p>
+  <div class="table-wrap">
+    <table class="dtable">
+      <thead><tr><th>Question you're answering</th><th>Chart type</th></tr></thead>
+      <tbody>
+        <tr><td>How does X change over time?</td><td>Line chart</td></tr>
+        <tr><td>How does X compare across categories?</td><td>Bar chart</td></tr>
+        <tr><td>What's the distribution of X?</td><td>Histogram / KDE plot</td></tr>
+        <tr><td>Is there a relationship between X and Y?</td><td>Scatter plot</td></tr>
+        <tr><td>How correlated are all my features?</td><td>Heatmap (Seaborn)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — Matplotlib + Seaborn</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">import</span> matplotlib.pyplot <span class="py-kw">as</span> plt
+<span class="py-kw">import</span> seaborn <span class="py-kw">as</span> sns
+fig, axes = plt.<span class="py-fn">subplots</span>(<span class="py-num">1</span>, <span class="py-num">2</span>, figsize=(<span class="py-num">12</span>,<span class="py-num">5</span>))
+sns.<span class="py-fn">histplot</span>(data=df, x=<span class="py-str">'revenue'</span>, kde=<span class="py-cls">True</span>, ax=axes[<span class="py-num">0</span>])
+sns.<span class="py-fn">barplot</span>(data=df, x=<span class="py-str">'region'</span>, y=<span class="py-str">'revenue'</span>, ax=axes[<span class="py-num">1</span>])
+plt.<span class="py-fn">tight_layout</span>(); plt.<span class="py-fn">show</span>()
+sns.<span class="py-fn">heatmap</span>(df.<span class="py-fn">corr</span>(), annot=<span class="py-cls">True</span>, cmap=<span class="py-str">'coolwarm'</span>, center=<span class="py-num">0</span>)</code></pre>
+  </div>
+</section>
+
+<section class="chapter" id="p5">
+  <div class="chapter-meta">
+    <span class="phase-tag python">Phase 3 · Python</span>
+    <span class="chapter-num">Lesson 15</span>
+    <button class="mark-btn" onclick="markDone('p5',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Scikit-learn — The ML Blueprint</h1>
+  <p class="ch-hook">Scikit-learn's genius is a unified API: every model has .fit(), .predict(), .transform(). Once you know this pattern, learning a new algorithm takes minutes, not days.</p>
+  <div class="callout why"><div class="callout-label">🎯 The Three Steps of ML</div><p><strong>1. Split</strong> your data (train/test). <strong>2. Fit</strong> a model on training data. <strong>3. Evaluate</strong> on test data. Never train and evaluate on the same data — you'd be testing if the model memorized, not learned.</p></div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — Scikit-learn Pipeline</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">from</span> sklearn.model_selection <span class="py-kw">import</span> train_test_split
+<span class="py-kw">from</span> sklearn.preprocessing <span class="py-kw">import</span> StandardScaler
+<span class="py-kw">from</span> sklearn.ensemble <span class="py-kw">import</span> RandomForestClassifier
+<span class="py-kw">from</span> sklearn.pipeline <span class="py-kw">import</span> Pipeline
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="py-num">0.2</span>, random_state=<span class="py-num">42</span>)
+pipe = <span class="py-cls">Pipeline</span>([(<span class="py-str">'scaler'</span>, <span class="py-cls">StandardScaler</span>()), (<span class="py-str">'model'</span>, <span class="py-cls">RandomForestClassifier</span>(n_estimators=<span class="py-num">100</span>))])
+pipe.<span class="py-fn">fit</span>(X_train, y_train)
+y_pred = pipe.<span class="py-fn">predict</span>(X_test)</code></pre>
+  </div>
+</section>
+
+<!-- PHASE 4: DATA SCIENCE -->
+<section class="chapter" id="d1">
+  <div class="chapter-meta">
+    <span class="phase-tag ds">Phase 4 · Data Science</span>
+    <span class="chapter-num">Lesson 16</span>
+    <button class="mark-btn" onclick="markDone('d1',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Statistical Thinking</h1>
+  <p class="ch-hook">You can run any model without understanding statistics. You can't interpret it without statistics. The models are the easy part. Understanding what the numbers mean is the hard part. This is where good data scientists separate from the rest.</p>
+  <div class="callout why"><div class="callout-label">🎯 Learning Objectives · ⏱ 25 min</div><p>After this lesson you'll be able to: <strong>Choose</strong> mean vs median for a given dataset · <strong>Explain</strong> what a p-value actually means (without the jargon) · <strong>Identify</strong> when correlation is being confused with causation · <strong>Construct</strong> a confidence interval interpretation.</p></div>
+  <div class="concept-grid">
+    <div class="concept-card"><span class="cc-icon">📊</span><div class="cc-title">Distribution</div><div class="cc-desc">How values spread. Normal, skewed, bimodal. Every dataset has a shape.</div></div>
+    <div class="concept-card"><span class="cc-icon">🎯</span><div class="cc-title">Central Tendency</div><div class="cc-desc">Mean vs median. Mean is pulled by outliers. Median isn't. Use median for income.</div></div>
+    <div class="concept-card"><span class="cc-icon">📏</span><div class="cc-title">Variance & Std Dev</div><div class="cc-desc">How spread out the data is. High variance = unpredictable. Low variance = consistent.</div></div>
+    <div class="concept-card"><span class="cc-icon">🔗</span><div class="cc-title">Correlation</div><div class="cc-desc">How two variables move together. -1 to +1. Correlation ≠ causation.</div></div>
+    <div class="concept-card"><span class="cc-icon">🎲</span><div class="cc-title">p-value</div><div class="cc-desc">"Assuming nothing is happening, how likely is this result by chance?" p < 0.05 = significant.</div></div>
+    <div class="concept-card"><span class="cc-icon">📦</span><div class="cc-title">Confidence Interval</div><div class="cc-desc">A range where the true value probably lies. "95% CI: [48, 52]" is more honest.</div></div>
+  </div>
+</section>
+
+<section class="chapter" id="d2">
+  <div class="chapter-meta">
+    <span class="phase-tag ds">Phase 4 · Data Science</span>
+    <span class="chapter-num">Lesson 17</span>
+    <button class="mark-btn" onclick="markDone('d2',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">EDA — Exploratory Data Analysis</h1>
+  <p class="ch-hook">EDA is the most underrated skill in data science. The best practitioners spend 60% of their time here, before touching a model. The model is the last 10%.</p>
+  <div class="callout why"><div class="callout-label">🎯 Learning Objectives · ⏱ 30 min</div><p>After this lesson: <strong>Execute</strong> a full EDA in under 10 lines of code · <strong>Detect</strong> null patterns, outliers, and skew visually · <strong>Build</strong> a correlation heatmap and interpret it · <strong>Document</strong> 5 business insights from a raw dataset.</p></div>
+  <div class="callout insight"><div class="callout-label">🗺️ The EDA Framework</div><p><strong>1. Shape</strong> – rows, columns, dtypes. <strong>2. Nulls</strong> – where and why. <strong>3. Distributions</strong> – each column's shape. <strong>4. Relationships</strong> – how columns relate. <strong>5. Anomalies</strong> – what's weird or interesting.</p></div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — EDA Template</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">import</span> pandas <span class="py-kw">as</span> pd, matplotlib.pyplot <span class="py-kw">as</span> plt, seaborn <span class="py-kw">as</span> sns
+df = pd.<span class="py-fn">read_csv</span>(<span class="py-str">'data.csv'</span>)
+<span class="py-fn">print</span>(<span class="py-str">f"Shape: {df.shape}"</span>)
+<span class="py-fn">print</span>(df.<span class="py-fn">dtypes</span>)
+null_pct = (df.<span class="py-fn">isnull</span>().<span class="py-fn">sum</span>() / <span class="py-fn">len</span>(df) * <span class="py-num">100</span>).<span class="py-fn">sort_values</span>(ascending=<span class="py-cls">False</span>)
+<span class="py-fn">print</span>(null_pct[null_pct > <span class="py-num">0</span>])
+num_cols = df.<span class="py-fn">select_dtypes</span>(include=<span class="py-str">'number'</span>).columns
+df[num_cols].<span class="py-fn">hist</span>(bins=<span class="py-num">30</span>, figsize=(<span class="py-num">12</span>,<span class="py-num">8</span>))
+sns.<span class="py-fn">heatmap</span>(df[num_cols].<span class="py-fn">corr</span>(), annot=<span class="py-cls">True</span>, cmap=<span class="py-str">'coolwarm'</span>)
+sns.<span class="py-fn">boxplot</span>(data=df[num_cols])</code></pre>
+  </div>
+  <div class="callout insight"><div class="callout-label">📂 Practice Dataset</div><p>Use the Superstore dataset — the best beginner EDA dataset: <a href="https://www.kaggle.com/datasets/vivek468/superstore-dataset-final" target="_blank">kaggle.com → Superstore Sales</a>. It has sales, categories, regions, and dates — perfect for practicing every EDA step above.</p></div>
+  <div class="callout warning"><div class="callout-label">⚠️ Common EDA Mistakes</div><p><strong>Don't:</strong> Skip checking data types — a numeric column stored as text will give wrong results silently. <strong>Don't:</strong> Delete outliers immediately — first understand why they exist (data error vs. genuine extreme value). <strong>Don't:</strong> Confuse correlation in a heatmap with causation. <strong>Do:</strong> Always check your <code>df.shape</code> before and after any filtering.</p></div>
+</section>
+
+<section class="chapter" id="d3">
+  <div class="chapter-meta">
+    <span class="phase-tag ds">Phase 4 · Data Science</span>
+    <span class="chapter-num">Lesson 18</span>
+    <button class="mark-btn" onclick="markDone('d3',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Feature Engineering</h1>
+  <p class="ch-hook">Raw data is almost never in the right shape for a model. Feature engineering is the craft of transforming raw signals into information the model can actually use. This is where domain knowledge meets data science.</p>
+  <div class="callout why"><div class="callout-label">🏆 The Secret of Kaggle Winners</div><p>Top Kaggle competitors don't win with fancier models. They win with better features. A great feature on a simple model beats a mediocre feature on a complex model, every time.</p></div>
+
+  <h2>Mini Case: Predicting Customer Churn</h2>
+  <p>You have a raw orders table. The model can't use dates or IDs directly — you need to engineer signals it can learn from:</p>
+  <div class="table-wrap">
+    <table class="dtable">
+      <thead><tr><th>Raw Column</th><th>Engineered Feature</th><th>Why it helps</th></tr></thead>
+      <tbody>
+        <tr><td><code>signup_date</code></td><td><code>tenure_days</code> = today − signup_date</td><td>Longer customers churn less — tenure is predictive</td></tr>
+        <tr><td><code>order_dates</code></td><td><code>days_since_last_order</code></td><td>Recency is the strongest churn signal</td></tr>
+        <tr><td><code>total_amount</code></td><td><code>avg_order_value</code> = total / order_count</td><td>High-value customers behave differently</td></tr>
+        <tr><td><code>region</code> (text)</td><td>One-hot encoded columns</td><td>Models need numbers, not strings</td></tr>
+        <tr><td><code>revenue</code> (skewed)</td><td><code>log_revenue</code> = log(1 + revenue)</td><td>Compresses outliers; helps linear models</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — Churn Feature Engineering</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">import</span> pandas <span class="py-kw">as</span> pd, numpy <span class="py-kw">as</span> np
+<span class="py-cm"># Temporal features</span>
+df[<span class="py-str">'tenure_days'</span>] = (pd.<span class="py-fn">Timestamp</span>(<span class="py-str">'today'</span>) - df[<span class="py-str">'signup_date'</span>]).dt.days
+df[<span class="py-str">'days_since_last_order'</span>] = (pd.<span class="py-fn">Timestamp</span>(<span class="py-str">'today'</span>) - df[<span class="py-str">'last_order_date'</span>]).dt.days
+df[<span class="py-str">'month'</span>] = df[<span class="py-str">'order_date'</span>].dt.month
+df[<span class="py-str">'is_weekend'</span>] = df[<span class="py-str">'order_date'</span>].dt.dayofweek >= <span class="py-num">5</span>
+<span class="py-cm"># Value features</span>
+df[<span class="py-str">'avg_order_value'</span>] = df[<span class="py-str">'total_revenue'</span>] / df[<span class="py-str">'order_count'</span>].clip(lower=<span class="py-num">1</span>)
+df[<span class="py-str">'log_revenue'</span>] = np.<span class="py-fn">log1p</span>(df[<span class="py-str">'total_revenue'</span>])
+df[<span class="py-str">'rolling_7d_avg'</span>] = df[<span class="py-str">'revenue'</span>].<span class="py-fn">rolling</span>(<span class="py-num">7</span>).<span class="py-fn">mean</span>()
+<span class="py-cm"># Categorical encoding</span>
+df = pd.<span class="py-fn">get_dummies</span>(df, columns=[<span class="py-str">'region'</span>, <span class="py-str">'category'</span>], drop_first=<span class="py-cls">True</span>)</code></pre>
+  </div>
+  <div class="callout warning"><div class="callout-label">⚠️ Common Feature Engineering Mistakes</div><p><strong>Data leakage:</strong> Never use features that include information from the future (e.g., using next month's orders to predict this month's churn). <strong>Scaling mismatch:</strong> Scale features <em>after</em> train/test split — never before, or your test set leaks into training. <strong>Too many features:</strong> Adding weak features adds noise. Less than 20 strong features usually beats 200 weak ones.</p></div>
+</section>
+
+<section class="chapter" id="d4">
+  <div class="chapter-meta">
+    <span class="phase-tag ds">Phase 4 · Data Science</span>
+    <span class="chapter-num">Lesson 19</span>
+    <button class="mark-btn" onclick="markDone('d4',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Model Evaluation & Tuning</h1>
+  <p class="ch-hook">Accuracy is a lie. 95% accuracy on a fraud dataset where 95% of transactions are legitimate means your model learned to say "not fraud" every time. Evaluation is the science of knowing if your model actually works.</p>
+  <div class="table-wrap">
+    <table class="dtable">
+      <thead><tr><th>Metric</th><th>When to use it</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td><code>Accuracy</code></td><td>Balanced classes only</td><td>% correct overall</td></tr>
+        <tr><td><code>Precision</code></td><td>False positives are costly</td><td>"Of predicted positives, how many were right?"</td></tr>
+        <tr><td><code>Recall</code></td><td>False negatives are costly</td><td>"Of actual positives, how many did I catch?"</td></tr>
+        <tr><td><code>F1 Score</code></td><td>Imbalanced classes</td><td>Harmonic mean of precision + recall</td></tr>
+        <tr><td><code>RMSE</code></td><td>Regression problems</td><td>Average prediction error in original units</td></tr>
+        <tr><td><code>R²</code></td><td>Regression problems</td><td>"How much variance do I explain?" 1.0 is perfect</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — Cross-Validation + GridSearch</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">from</span> sklearn.model_selection <span class="py-kw">import</span> cross_val_score, GridSearchCV
+scores = <span class="py-fn">cross_val_score</span>(pipe, X, y, cv=<span class="py-num">5</span>, scoring=<span class="py-str">'f1_macro'</span>)
+param_grid = {<span class="py-str">'model__n_estimators'</span>:[<span class="py-num">50</span>,<span class="py-num">100</span>,<span class="py-num">200</span>], <span class="py-str">'model__max_depth'</span>:[<span class="py-cls">None</span>,<span class="py-num">5</span>,<span class="py-num">10</span>]}
+search = <span class="py-cls">GridSearchCV</span>(pipe, param_grid, cv=<span class="py-num">5</span>, scoring=<span class="py-str">'f1_macro'</span>)
+search.<span class="py-fn">fit</span>(X_train, y_train)
+<span class="py-fn">print</span>(<span class="py-str">"Best params:"</span>, search.best_params_)</code></pre>
+  </div>
+</section>
+
+<!-- PHASE 5: PROJECTS -->
+<section class="chapter" id="r1">
+  <div class="chapter-meta">
+    <span class="phase-tag project">Phase 5 · Build</span>
+    <span class="chapter-num">Lesson 20</span>
+    <button class="mark-btn" onclick="markDone('r1',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">End-to-End Project</h1>
+  <p class="ch-hook">Projects are the only currency that matters when you're applying for jobs. Build three to five genuinely interesting projects, and you don't need a degree. Here's the complete blueprint.</p>
+  <div class="callout insight"><div class="callout-label">🔁 The Complete DS Workflow</div><p><strong>1. Define</strong> the question. <strong>2. Collect</strong> the data. <strong>3. Clean</strong> and validate. <strong>4. EDA</strong> — understand before modeling. <strong>5. Features</strong> — transform intelligently. <strong>6. Model</strong> — try multiple, cross-validate. <strong>7. Evaluate</strong> — use the right metrics. <strong>8. Communicate</strong> — the result must be understood by someone who doesn't know data science.</p></div>
+  <div class="callout project"><div class="callout-label">🚀 Project Ideas — Tier by Difficulty</div><p><strong>Starter:</strong> Superstore Sales EDA → tell 5 business insights with charts.<br><strong>Intermediate:</strong> Customer churn prediction → deploy a simple Streamlit app.<br><strong>Advanced:</strong> Stock price forecasting with time-series + LSTM → write a blog post.<br><strong>Portfolio-worthy:</strong> A dataset nobody has analyzed yet + an original insight. Find it on <a href="https://kaggle.com/datasets" target="_blank">Kaggle</a>, <a href="https://data.gov" target="_blank">data.gov</a>, or by scraping.</p></div>
+
+  <h2>Streamlit Boilerplate — Your First App</h2>
+  <p>Install with <code>pip install streamlit pandas matplotlib</code>, paste this, then run <code>streamlit run app.py</code>:</p>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang python">Python — Streamlit Dashboard Starter</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><code><span class="py-kw">import</span> streamlit <span class="py-kw">as</span> st
+<span class="py-kw">import</span> pandas <span class="py-kw">as</span> pd
+<span class="py-kw">import</span> matplotlib.pyplot <span class="py-kw">as</span> plt
+
+st.<span class="py-fn">set_page_config</span>(page_title=<span class="py-str">"Sales Dashboard"</span>, layout=<span class="py-str">"wide"</span>)
+st.<span class="py-fn">title</span>(<span class="py-str">"📊 Sales Dashboard"</span>)
+
+<span class="py-cm"># 1. Load data (replace with your CSV path)</span>
+df = pd.<span class="py-fn">read_csv</span>(<span class="py-str">"superstore.csv"</span>, parse_dates=[<span class="py-str">"Order Date"</span>])
+
+<span class="py-cm"># 2. Sidebar filters</span>
+regions = st.sidebar.<span class="py-fn">multiselect</span>(<span class="py-str">"Region"</span>, df[<span class="py-str">"Region"</span>].<span class="py-fn">unique</span>(), default=df[<span class="py-str">"Region"</span>].<span class="py-fn">unique</span>())
+df = df[df[<span class="py-str">"Region"</span>].<span class="py-fn">isin</span>(regions)]
+
+<span class="py-cm"># 3. KPI cards</span>
+col1, col2, col3 = st.<span class="py-fn">columns</span>(<span class="py-num">3</span>)
+col1.<span class="py-fn">metric</span>(<span class="py-str">"Total Revenue"</span>, <span class="py-str">f"${df['Sales'].sum():,.0f}"</span>)
+col2.<span class="py-fn">metric</span>(<span class="py-str">"Total Orders"</span>, <span class="py-fn">len</span>(df))
+col3.<span class="py-fn">metric</span>(<span class="py-str">"Avg Order Value"</span>, <span class="py-str">f"${df['Sales'].mean():,.2f}"</span>)
+
+<span class="py-cm"># 4. Chart</span>
+monthly = df.<span class="py-fn">groupby</span>(df[<span class="py-str">"Order Date"</span>].dt.to_period(<span class="py-str">"M"</span>))[<span class="py-str">"Sales"</span>].<span class="py-fn">sum</span>()
+st.<span class="py-fn">line_chart</span>(monthly)
+
+<span class="py-cm"># 5. Data table</span>
+st.<span class="py-fn">dataframe</span>(df.<span class="py-fn">head</span>(<span class="py-num">20</span>))</code></pre>
+  </div>
+  <div class="callout insight"><div class="callout-label">🚢 Deploy in 2 Minutes</div><p>Push your code to GitHub, then go to <a href="https://share.streamlit.io" target="_blank">share.streamlit.io</a> → "New app" → connect your repo. Free hosting, shareable URL, no server needed. This link goes in your portfolio and CV.</p></div>
+</section>
+
+<section class="chapter" id="r2">
+  <div class="chapter-meta">
+    <span class="phase-tag project">Phase 5 · Build</span>
+    <span class="chapter-num">Lesson 21</span>
+    <button class="mark-btn" onclick="markDone('r2',this)">Mark done</button>
+  </div>
+  <h1 class="ch-title">Dashboard + Storytelling</h1>
+  <p class="ch-hook">The best data scientist who can't communicate their findings is less valuable than a mediocre analyst who can. The last skill is translating numbers into decisions.</p>
+  <div class="callout analogy"><div class="callout-label">📰 The Journalist Rule</div><p>A good journalist leads with the most important finding, not the chronological story. Your data presentation should work the same way: <strong>Insight first. Evidence second. Detail last.</strong> Don't make your audience hunt for the point.</p></div>
+  <h2>Dashboard Design Principles</h2>
+  <ul>
+    <li><strong>One dashboard, one question.</strong> "How is the business doing this month?" not "Here is everything about everything."</li>
+    <li><strong>The 5-second rule.</strong> The most important insight should be readable in 5 seconds without reading a title.</li>
+    <li><strong>Color has meaning.</strong> Red = bad, green = good. Saturation = intensity. Don't use color just to look nice.</li>
+    <li><strong>Remove what doesn't earn its place.</strong> Every gridline, legend entry, and label should justify its presence.</li>
+  </ul>
+  <div class="callout project"><div class="callout-label">🚀 Final Project — Build a Streamlit Dashboard</div><p>Take any dataset you've analyzed. Build a Streamlit app with: (1) Sidebar filters (dropdowns, date pickers), (2) KPI cards (total revenue, total customers, avg order), (3) Two interactive charts, (4) A filtered data table. Deploy to Streamlit Cloud. This is your portfolio's anchor project.</p></div>
+</section>
+
+<!-- LIVE LABS -->
+<section class="chapter" id="lab-sql">
+  <div class="chapter-meta"><span class="phase-tag sql">Live Lab</span></div>
+  <h1 class="ch-title">🧪 SQL Sandbox</h1>
+  <p style="color:var(--text2);margin-bottom:8px">Interactive SQLite running in your browser. Sample database: customers, products, orders.</p>
+  <div class="sandbox">
+    <div class="sandbox-header">
+      <div class="sandbox-title"><div class="live-dot sql-dot"></div> SQLite WASM</div>
+      <div class="sandbox-actions">
+        <button class="btn btn-sql" onclick="runSqlQuery()">▶ Run</button>
+        <button class="btn btn-ghost" onclick="resetSqlDb()">↺ Reset DB</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('sql-editor').value=''">Clear</button>
+      </div>
+    </div>
+    <div class="presets">
+      <button class="preset" onclick="loadSqlPreset('SELECT * FROM customers LIMIT 10;')">All Customers</button>
+      <button class="preset" onclick="loadSqlPreset('SELECT city, COUNT(*) as count, ROUND(SUM(total_amount),2) as revenue\nFROM customers c JOIN orders o USING(customer_id)\nGROUP BY city ORDER BY revenue DESC;')">Revenue by City</button>
+      <button class="preset" onclick="loadSqlPreset('WITH ranked AS (\n  SELECT c.name, c.city, SUM(o.total_amount) as rev,\n  RANK() OVER (PARTITION BY c.city ORDER BY SUM(o.total_amount) DESC) as rk\n  FROM customers c JOIN orders o USING(customer_id)\n  GROUP BY c.customer_id, c.name, c.city\n)\nSELECT * FROM ranked WHERE rk = 1;')">Top Per City (Window)</button>
+      <button class="preset" onclick="loadSqlPreset('SELECT p.category, COUNT(*) as orders, ROUND(AVG(o.total_amount),2) as avg_order\nFROM products p JOIN orders o USING(product_id)\nGROUP BY p.category\nHAVING COUNT(*) > 2\nORDER BY avg_order DESC;')">Category Analysis</button>
+    </div>
+    <div class="sandbox-editor">
+      <textarea id="sql-editor" spellcheck="false">SELECT c.name, c.city,
+    COUNT(o.order_id)          AS orders,
+    ROUND(SUM(o.total_amount), 2) AS total_spent
+FROM customers c
+LEFT JOIN orders o USING(customer_id)
+GROUP BY c.customer_id
+ORDER BY total_spent DESC
+LIMIT 8;</textarea>
+    </div>
+    <div class="sandbox-result" id="sql-result"><div class="result-meta">⏳ Click Run to execute</div></div>
+  </div>
+</section>
+
+<section class="chapter" id="lab-py">
+  <div class="chapter-meta"><span class="phase-tag python">Live Lab</span></div>
+  <h1 class="ch-title">🐍 Python Sandbox</h1>
+  <p style="color:var(--text2);margin-bottom:8px">Real Python via Pyodide — NumPy, Pandas, Matplotlib all available.</p>
+  <div class="sandbox">
+    <div class="sandbox-header">
+      <div class="sandbox-title"><div class="live-dot py-dot"></div> Pyodide WASM</div>
+      <div class="sandbox-actions">
+        <button class="btn btn-py" id="py-run-btn" onclick="runPython()">▶ Run</button>
+        <button class="btn btn-ghost" onclick="clearPy()">Clear</button>
+      </div>
+    </div>
+    <div class="presets">
+      <button class="preset" onclick="loadPy('eda')">EDA Demo</button>
+      <button class="preset" onclick="loadPy('numpy')">NumPy Broadcasting</button>
+      <button class="preset" onclick="loadPy('plot')">Multi-Chart</button>
+      <button class="preset" onclick="loadPy('ml')">ML Pipeline</button>
+    </div>
+    <div class="sandbox-editor">
+      <textarea id="py-editor" spellcheck="false" style="min-height:200px;">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+np.random.seed(42)
+n = 200
+df = pd.DataFrame({
+    'region':   np.random.choice(['North','South','East','West'], n),
+    'product':  np.random.choice(['Laptop','Mouse','Monitor','Keyboard'], n),
+    'revenue':  np.random.lognormal(6, 0.8, n).round(2),
+    'orders':   np.random.poisson(4, n) + 1,
+})
+df['rev_per_order'] = (df['revenue'] / df['orders']).round(2)
+
+print("=== EDA Summary ===")
+print(df.describe().round(2))
+print("\n=== Revenue by Region ===")
+print(df.groupby('region')['revenue'].agg(['sum','mean','count']).round(2))
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+df.groupby('region')['revenue'].sum().sort_values().plot(
+    kind='barh', ax=axes[0], color='#6366f1', alpha=0.85)
+axes[0].set_title('Total Revenue by Region', fontweight='bold')
+axes[0].set_xlabel('Revenue')
+
+sns.histplot(df['revenue'], kde=True, ax=axes[1], color='#10b981', alpha=0.7)
+axes[1].set_title('Revenue Distribution', fontweight='bold')
+plt.tight_layout()
+plt.show()</textarea>
+    </div>
+    <div class="output-pane" id="py-output"><span class="ph">Click Run to execute.</span></div>
+  </div>
+</section>
+
+</main>
+
+<script>
+'use strict';
+// ─── THEME ──────────────────────────────────────────────────
+function updateThemeUI(t){
+  const i=document.getElementById('ti'), l=document.getElementById('tl');
+  if(!i)return;
+  if(t==='dark'){i.textContent='☀️';l.textContent='Light'}
+  else{i.textContent='🌙';l.textContent='Dark'}
+}
+(function(){
+  const s = localStorage.getItem('dmos-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',s);
+  updateThemeUI(s);
+})();
+function toggleTheme(){
+  const c = document.documentElement.getAttribute('data-theme');
+  const n = c==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('dmos-theme',n);
+  updateThemeUI(n);
+}
+
+// ─── SIDEBAR ────────────────────────────────────────────────
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sb-overlay').classList.toggle('open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+}
+function scrollToSection(id){
+  const el=document.querySelector(id);
+  if(el)el.scrollIntoView({behavior:'smooth'});
+}
+
+// ─── PROGRESS ────────────────────────────────────────────────
+const LESSONS = ['ph0','e1','e2','e3','e4','s1','s2','s3','s4','s5','s6','s7','p1','p2','p3','p4','p5','d1','d2','d3','d4','r1','r2'];
+let done = new Set(JSON.parse(localStorage.getItem('dmos-done')||'[]'));
+let streak = parseInt(localStorage.getItem('dmos-streak')||'0');
+
+function markDone(id, btn){
+  done.add(id);
+  localStorage.setItem('dmos-done', JSON.stringify([...done]));
+  btn.textContent='✓ Done';
+  btn.classList.add('done');
+  // Trigger pop animation separately so it doesn't replay on page reload
+  btn.classList.remove('done-anim');
+  void btn.offsetWidth;
+  btn.classList.add('done-anim');
+  setTimeout(()=>btn.classList.remove('done-anim'),400);
+  const tl = document.getElementById('tl-'+id);
+  if(tl) tl.classList.add('done');
+  updateProgress();
+  updateStreak();
+  const sv=document.getElementById('pb-saved');
+  if(sv){sv.classList.add('show');setTimeout(()=>sv.classList.remove('show'),2000);}
+}
+function updateProgress(){
+  const total=LESSONS.length, n=done.size;
+  const pct=Math.round(n/total*100);
+  document.getElementById('pb-fill').style.width=pct+'%';
+  document.getElementById('pb-pct').textContent=pct+'%';
+  // Update text without destroying the pb-saved span
+  const sub=document.getElementById('pb-sub');
+  if(sub){
+    const saved=document.getElementById('pb-saved');
+    sub.textContent=n+' / '+total+' lessons complete ';
+    if(saved)sub.appendChild(saved);
+  }
+}
+function updateStreak(){
+  const today=new Date().toDateString();
+  const last=localStorage.getItem('dmos-last-day');
+  if(last!==today){
+    streak++;
+    localStorage.setItem('dmos-streak',streak);
+    localStorage.setItem('dmos-last-day',today);
+  }
+  document.getElementById('streak').textContent=streak;
+}
+(function(){
+  // Update streak on page visit (not on lesson completion)
+  updateStreak();
+  LESSONS.forEach(id=>{
+    if(done.has(id)){
+      const btn=document.querySelector(`button[onclick*="markDone('${id}"]`);
+      if(btn){btn.textContent='✓ Done';btn.classList.add('done')}
+      const tl=document.getElementById('tl-'+id);
+      if(tl)tl.classList.add('done');
+    }
+  });
+  updateProgress();
+  document.getElementById('streak').textContent=streak;
+})();
+
+// ─── SIDEBAR PHASE COLLAPSE ──────────────────────────────────
+document.querySelectorAll('.phase-label').forEach(label=>{
+  // Add toggle arrow
+  const arrow=document.createElement('span');
+  arrow.className='ph-toggle';
+  arrow.textContent='▾';
+  label.appendChild(arrow);
+  // Group sibling toc-links
+  const group=label.closest('.phase-group');
+  label.addEventListener('click',()=>{
+    group.classList.toggle('collapsed');
+  });
+});
+// Wrap toc-links in a div for collapse target
+document.querySelectorAll('.phase-group').forEach(group=>{
+  const links=Array.from(group.querySelectorAll('.toc-link'));
+  if(!links.length)return;
+  const wrap=document.createElement('div');
+  wrap.className='phase-links';
+  links.forEach(l=>wrap.appendChild(l));
+  group.appendChild(wrap);
+});
+
+// ─── SCROLL SPY ──────────────────────────────────────────────
+const allIds=['hero','ph0','e1','e2','e3','e4','s1','s2','s3','s4','s5','s6','s7','p1','p2','p3','p4','p5','d1','d2','d3','d4','r1','r2','lab-sql','lab-py'];
+const spy=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.toc-link').forEach(l=>l.classList.remove('active'));
+      const a=document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+      if(a)a.classList.add('active');
+    }
+  });
+},{rootMargin:'-15% 0px -70% 0px'});
+allIds.forEach(id=>{const el=document.getElementById(id);if(el)spy.observe(el)});
+
+// ─── QUIZ ────────────────────────────────────────────────────
+const quizReasons={
+  'qs1-1':{'c':'SQL is declarative: you write WHAT result you want, not HOW to compute it. The query optimizer decides the execution strategy — indexes, join order, caching. You just describe the shape of the output.'},
+  'qe3-1':{'d':'SUMIFS lets you sum a range with multiple criteria simultaneously — it\'s the most powerful conditional aggregation formula in Excel. SUMIF handles only one criterion. Most real business questions need multiple.'},
+  'qp3-1':{'c':'In Pandas, you chain operations: filter the DataFrame with a boolean mask first, then groupby the relevant column, then apply the aggregation. This mirrors SQL\'s WHERE → GROUP BY → SELECT execution order.'},
+  'qe1-1':{'c':'When you drag a formula down a column, Excel replicates it for each row — exactly like a for loop iterating over a range. The cell reference auto-updates (A1→A2→A3) just like a loop variable incrementing.'}
+};
+function checkQuiz(qId,selected,correct){
+  const c=document.getElementById(qId);
+  if(c.classList.contains('answered'))return;
+  c.classList.add('answered');
+  c.querySelectorAll('.quiz-option').forEach(opt=>{
+    const inp=opt.querySelector('input');
+    if(inp.value===correct)opt.classList.add('correct');
+    else if(inp.value===selected&&selected!==correct)opt.classList.add('wrong');
+    inp.disabled=true;
+  });
+  const fb=document.getElementById(qId+'-fb');
+  const reason=(quizReasons[qId]&&quizReasons[qId][correct])||'';
+  if(selected===correct){
+    fb.innerHTML=`<strong>✓ Correct!</strong>${reason?' <span style="opacity:0.85">'+reason+'</span>'  :''}`;
+    fb.className='quiz-feedback ok';
+  }else{
+    fb.innerHTML=`<strong>✗ Not quite.</strong> The correct answer is highlighted in green.${reason?' <em>'+reason+'</em>':''}`;
+    fb.className='quiz-feedback fail';
+  }
+}
+
+// ─── COPY CODE ───────────────────────────────────────────────
+function copyCode(btn){
+  const pre=btn.closest('.code-wrap').querySelector('pre');
+  if(!pre)return;
+  navigator.clipboard.writeText(pre.innerText).then(()=>{
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy',1600);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=pre.innerText;
+    document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy',1600);
+  });
+}
+
+// ─── TAB KEY SUPPORT (SQL + PYTHON) ─────────────────────────
+['sql-editor','py-editor'].forEach(function(edId){
+  const el=document.getElementById(edId);
+  if(!el)return;
+  el.addEventListener('keydown',function(e){
+    if(e.key==='Tab'){
+      e.preventDefault();
+      const s=this.selectionStart,end=this.selectionEnd;
+      this.value=this.value.substring(0,s)+'    '+this.value.substring(end);
+      this.selectionStart=this.selectionEnd=s+4;
+    }
+  });
+});
+
+// ─── JOIN VISUALIZER ─────────────────────────────────────────
+const joinData={
+  inner:{title:'INNER JOIN — The Intersection',desc:'Returns only rows where the join condition matches in both tables. Most common JOIN in production.',
+    code:`<span class="kw">SELECT</span> c.name, o.order_id, o.total_amount\n<span class="kw">FROM</span> <span class="tbl">customers</span> c\n<span class="kw">INNER JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> c.customer_id = o.customer_id;\n<span class="cm">-- Only returns customers who have orders</span>`},
+  left:{title:'LEFT JOIN — Keep All of Left',desc:'All rows from the left table. Where no match exists in the right table, columns are NULL. Great for finding "customers with no orders."',
+    code:`<span class="kw">SELECT</span> c.name, o.order_id\n<span class="kw">FROM</span> <span class="tbl">customers</span> c\n<span class="kw">LEFT JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> c.customer_id = o.customer_id;\n<span class="cm">-- Returns ALL customers; order columns NULL if no order</span>\n\n<span class="cm">-- Find customers with NO orders:</span>\n<span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>`},
+  full:{title:'FULL OUTER JOIN — Everything',desc:'All rows from both tables. NULLs fill the gaps where no match exists. Use to find mismatches between two datasets.',
+    code:`<span class="cm">-- SQLite emulation (no FULL OUTER):</span>\n<span class="kw">SELECT</span> c.name, o.order_id <span class="kw">FROM</span> <span class="tbl">customers</span> c <span class="kw">LEFT JOIN</span> <span class="tbl">orders</span> o <span class="kw">USING</span>(customer_id)\n<span class="kw">UNION ALL</span>\n<span class="kw">SELECT</span> c.name, o.order_id <span class="kw">FROM</span> <span class="tbl">orders</span> o <span class="kw">LEFT JOIN</span> <span class="tbl">customers</span> c <span class="kw">USING</span>(customer_id)\n<span class="kw">WHERE</span> c.customer_id <span class="kw">IS NULL</span>`},
+  self:{title:'SELF JOIN — A Table Joins Itself',desc:'The same table appears twice with different aliases. Classic use: employee-manager relationships, comparing rows within the same dataset.',
+    code:`<span class="cm">-- Find pairs of customers from the same city</span>\n<span class="kw">SELECT</span> a.name <span class="kw">AS</span> cust1, b.name <span class="kw">AS</span> cust2, a.city\n<span class="kw">FROM</span> <span class="tbl">customers</span> a\n<span class="kw">JOIN</span> <span class="tbl">customers</span> b\n    <span class="kw">ON</span> a.city = b.city <span class="kw">AND</span> a.customer_id < b.customer_id`}
+};
+function showJoin(type){
+  document.querySelectorAll('.join-card').forEach(c=>c.classList.remove('active'));
+  const card=document.getElementById('jcard-'+type);
+  if(card)card.classList.add('active');
+  const d=joinData[type];
+  if(!d)return;
+  document.getElementById('join-detail').innerHTML=`
+    <h3 style="margin-top:0;color:var(--cyan2)">${d.title}</h3>
+    <p style="color:var(--text2);font-size:0.92rem;margin-bottom:14px">${d.desc}</p>
+    <div class="code-wrap" style="margin:0">
+      <div class="code-header"><span class="code-lang sql">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><code>${d.code}</code></pre>
+    </div>`;
+}
+
+// ─── UTILS ───────────────────────────────────────────────────
+function escapeHtml(v){
+  if(v===null||v===undefined)return '';
+  return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ─── SQL SANDBOX ─────────────────────────────────────────────
+let db=null, sqlJs=null;
+async function setupSqlDb(){
+  try{
+    await loadSqlJsScript();
+    db=new sqlJs.Database();
+    db.run(getSqlSchema());
+    document.getElementById('sql-result').innerHTML='<div class="result-meta"><span class="badge-ok">✓ Ready</span> SQLite database loaded — 10 customers, 10 products, 20 orders.</div>';
+    runSqlQuery();
+  }catch(err){
+    document.getElementById('sql-result').innerHTML=`<div class="error-msg">❌ Failed to load SQL engine: ${escapeHtml(err.message)}</div>`;
+    showGlobalBanner('⚠️ SQL sandbox failed to load ('+escapeHtml(err.message)+'). Try reloading.');
+  }
+}
+function showGlobalBanner(msg){
+  const b=document.getElementById('global-banner');
+  const m=document.getElementById('global-banner-msg');
+  if(b&&m){m.textContent=msg;b.classList.add('show');}
+}
+function resetSqlDb(){
+  if(!db){document.getElementById('sql-result').innerHTML='<div class="error-msg">⏳ Database not ready yet.</div>';return;}
+  try{
+    db.run(getSqlSchema());
+    document.getElementById('sql-result').innerHTML='<div class="result-meta"><span class="badge-ok">✓ Reset</span> Database restored to original state.</div>';
+  }catch(err){
+    document.getElementById('sql-result').innerHTML=`<div class="error-msg">❌ ${escapeHtml(err.message)}</div>`;
+  }
+}
+function loadSqlJsScript(){
+  return new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js';
+    s.onload=async()=>{
+      try{
+        sqlJs=await initSqlJs({locateFile:f=>`https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}`});
+        res();
+      }catch(e){rej(e)}
+    };
+    s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
+function getSqlSchema(){
+  return `
+DROP TABLE IF EXISTS orders; DROP TABLE IF EXISTS customers; DROP TABLE IF EXISTS products;
+CREATE TABLE customers (customer_id INTEGER PRIMARY KEY, name TEXT, email TEXT, city TEXT, signup_date TEXT);
+INSERT INTO customers VALUES
+(1,'Aryan Mehta','aryan@gmail.com','Mumbai','2022-01-15'),
+(2,'Priya Sharma','priya@outlook.com','Delhi','2022-03-22'),
+(3,'Rahul Gupta','rahul@yahoo.com','Bangalore','2021-11-08'),
+(4,'Sneha Patel','sneha@gmail.com','Mumbai','2023-02-14'),
+(5,'Vikram Singh','vikram@gmail.com','Chennai','2022-07-30'),
+(6,'Anjali Nair','anjali@gmail.com','Bangalore','2021-05-19'),
+(7,'Deepak Joshi','deepak@hotmail.com','Delhi','2023-01-05'),
+(8,'Kavya Reddy','kavya@gmail.com','Hyderabad','2022-09-12'),
+(9,'Mohit Kumar','mohit@gmail.com','Mumbai','2021-12-01'),
+(10,'Ritika Verma','ritika@gmail.com','Pune','2023-04-18');
+CREATE TABLE products (product_id INTEGER PRIMARY KEY, name TEXT, category TEXT, price REAL);
+INSERT INTO products VALUES
+(1,'iPhone 15 Pro','Electronics',1199.99),(2,'Samsung Galaxy S24','Electronics',899.99),
+(3,'Sony WH-1000XM5','Electronics',349.99),(4,'MacBook Air M3','Electronics',1299.99),
+(5,'Logitech MX Keys','Electronics',99.99),(6,'Nike Air Max 90','Footwear',129.99),
+(7,'Adidas Ultraboost','Footwear',189.99),(8,'Levi''s 501 Jeans','Clothing',79.99),
+(9,'Uniqlo Fleece','Clothing',59.99),(10,'Kindle Paperwhite','Electronics',139.99);
+CREATE TABLE orders (order_id INTEGER PRIMARY KEY, customer_id INTEGER, product_id INTEGER, quantity INTEGER, order_date TEXT, total_amount REAL, status TEXT);
+INSERT INTO orders VALUES
+(1,1,1,1,'2024-01-05',1199.99,'delivered'),(2,2,6,2,'2024-01-08',259.98,'delivered'),
+(3,3,10,3,'2024-01-12',419.97,'delivered'),(4,4,4,1,'2024-01-15',1299.99,'shipped'),
+(5,5,7,1,'2024-01-18',189.99,'delivered'),(6,6,3,1,'2024-01-20',349.99,'delivered'),
+(7,7,9,2,'2024-01-22',119.98,'pending'),(8,8,8,3,'2024-01-25',239.97,'delivered'),
+(9,9,1,1,'2024-01-28',1199.99,'delivered'),(10,10,2,1,'2024-02-01',899.99,'shipped'),
+(11,1,5,2,'2024-02-03',199.98,'delivered'),(12,2,10,1,'2024-02-07',139.99,'delivered'),
+(13,3,9,2,'2024-02-10',119.98,'pending'),(14,4,6,1,'2024-02-12',129.99,'delivered'),
+(15,5,6,1,'2024-02-15',129.99,'delivered'),(16,6,1,1,'2024-02-18',1199.99,'shipped'),
+(17,7,8,5,'2024-02-20',399.95,'delivered'),(18,8,3,1,'2024-02-22',349.99,'delivered'),
+(19,9,4,1,'2024-02-25',1299.99,'delivered'),(20,10,7,2,'2024-02-28',379.98,'delivered');`;
+}
+function runSqlQuery(){
+  const ed=document.getElementById('sql-editor');
+  const res=document.getElementById('sql-result');
+  const sql=ed.value.trim();
+  if(!db){res.innerHTML='<div class="error-msg">⏳ Database not ready yet.</div>';return}
+  if(!sql){res.innerHTML='<div class="result-meta">Enter a query above.</div>';return}
+  try{
+    const results=db.exec(sql);
+    if(!results||results.length===0){
+      res.innerHTML=`<div class="result-meta"><span class="badge-ok">✓ OK</span> Query executed — no rows returned.</div>`;return;
+    }
+    const {columns,values}=results[results.length-1];
+    let h=`<div class="result-meta"><span class="badge-ok">✓ ${values.length} row${values.length!==1?'s':''}</span></div><div class="result-table-wrap"><table class="result-table"><thead><tr>`;
+    columns.forEach(c=>h+=`<th>${escapeHtml(c)}</th>`);
+    h+=`</tr></thead><tbody>`;
+    values.forEach(row=>{
+      h+='<tr>';
+      row.forEach(cell=>{h+=`<td>${cell===null?'<span style="color:var(--text3);font-style:italic">NULL</span>':escapeHtml(cell)}</td>`});
+      h+='</tr>';
+    });
+    h+='</tbody></table></div>';
+    res.innerHTML=h;
+  }catch(err){
+    res.innerHTML=`<div class="error-msg">❌ ${err.message}</div>`;
+  }
+}
+function loadSqlPreset(q){
+  document.getElementById('sql-editor').value=q;
+  runSqlQuery();
+}
+
+// ─── PYTHON SANDBOX ──────────────────────────────────────────
+let pyodide=null, pyReady=false, pyRunning=false;
+const pyOut=document.getElementById('py-output');
+const pyEd=document.getElementById('py-editor');
+const pyBtn=document.getElementById('py-run-btn');
+const pySnippets={
+  eda:`import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+np.random.seed(42)
+n = 200
+df = pd.DataFrame({
+    'region':   np.random.choice(['North','South','East','West'], n),
+    'product':  np.random.choice(['Laptop','Mouse','Monitor','Keyboard'], n),
+    'revenue':  np.random.lognormal(6, 0.8, n).round(2),
+    'orders':   np.random.poisson(4, n) + 1,
+})
+df['rev_per_order'] = (df['revenue'] / df['orders']).round(2)
+
+print("=== EDA Summary ===")
+print(df.describe().round(2))
+print("\\n=== Revenue by Region ===")
+print(df.groupby('region')['revenue'].agg(['sum','mean','count']).round(2))
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+df.groupby('region')['revenue'].sum().sort_values().plot(
+    kind='barh', ax=axes[0], color='#6366f1', alpha=0.85)
+axes[0].set_title('Total Revenue by Region', fontweight='bold')
+axes[0].set_xlabel('Revenue')
+sns.histplot(df['revenue'], kde=True, ax=axes[1], color='#10b981', alpha=0.7)
+axes[1].set_title('Revenue Distribution', fontweight='bold')
+plt.tight_layout()
+plt.show()`,
+  numpy:`import numpy as np
+
+a = np.arange(1, 5).reshape(-1, 1)  # shape (4,1)
+b = np.array([10, 20, 30])          # shape (1,3)
+print("Broadcasting a+b:")
+print(a + b)                         # shape (4,3)
+
+arr = np.random.randint(0, 100, 20)
+print("\\nArray:", arr)
+print("Mean:", arr.mean().round(2))
+print("Std:",  arr.std().round(2))
+print("Evens:", arr[arr % 2 == 0])
+print("Top 5:", np.sort(arr)[-5:][::-1])`,
+  plot:`import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+x = np.linspace(0, 10, 200)
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 7))
+axes[0,0].plot(x, np.sin(x), color='#6366f1', linewidth=2, label='sin(x)')
+axes[0,0].plot(x, np.cos(x), color='#10b981', linewidth=2, label='cos(x)')
+axes[0,0].legend(); axes[0,0].set_title('Trig Functions')
+axes[0,0].grid(True, alpha=0.3)
+
+data = np.random.lognormal(0, 0.5, 500)
+axes[0,1].hist(data, bins=30, color='#f59e0b', alpha=0.8, edgecolor='white')
+axes[0,1].set_title('Log-Normal Distribution')
+
+cats = ['A','B','C','D']
+vals = np.random.randint(10, 100, 4)
+axes[1,0].bar(cats, vals, color=['#6366f1','#10b981','#f59e0b','#f43f5e'], alpha=0.85)
+axes[1,0].set_title('Category Comparison')
+
+t = np.random.randn(100)
+axes[1,1].scatter(t[:-1], t[1:], alpha=0.5, color='#22d3ee', s=20)
+axes[1,1].set_title('Autocorrelation Plot')
+axes[1,1].axhline(0, color='white', linewidth=0.5)
+
+plt.suptitle('Visualization Showcase', fontsize=13, fontweight='bold')
+plt.tight_layout()
+plt.show()`,
+  ml:`from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import classification_report
+import numpy as np
+
+X, y = make_classification(n_samples=500, n_features=10,
+                            n_informative=6, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+
+pipe = Pipeline([
+    ('scaler', StandardScaler()),
+    ('model', RandomForestClassifier(n_estimators=100, random_state=42))
+])
+pipe.fit(X_train, y_train)
+y_pred = pipe.predict(X_test)
+
+cv = cross_val_score(pipe, X_train, y_train, cv=5, scoring='f1_macro')
+print(f"Cross-val F1: {cv.mean():.3f} ± {cv.std():.3f}")
+print("\\n" + classification_report(y_test, y_pred))`
+};
+
+async function initPy(){
+  try{
+    pyOut.innerHTML='<span style="color:var(--text3)">⏳ Loading Pyodide runtime...</span>';
+    // Inject Pyodide CDN script if not already loaded
+    if(typeof loadPyodide==='undefined'){
+      await new Promise((res,rej)=>{
+        const s=document.createElement('script');
+        s.src='https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+        s.onload=res; s.onerror=rej;
+        document.head.appendChild(s);
+      });
+    }
+    pyodide=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'});
+    pyOut.innerHTML='<span style="color:var(--text3)">⏳ Installing packages (numpy, pandas, matplotlib, seaborn, scikit-learn)...</span>';
+    await pyodide.loadPackage(['numpy','pandas','matplotlib','scikit-learn']);
+    await pyodide.runPythonAsync(`
+import sys,io,base64,matplotlib
+matplotlib.use('agg')
+import numpy as np,pandas as pd,matplotlib.pyplot as plt
+import seaborn as sns
+print("✅ Python environment ready.")
+    `);
+    pyReady=true;
+    pyOut.innerHTML='<span style="color:var(--text3)">✅ Python ready. Click Run to execute code.</span>';
+    pyBtn.textContent='▶ Run';
+  }catch(err){
+    pyReady=false;
+    pyOut.innerHTML=`<div class="err">❌ Failed to load Python: ${err.message}<br>Check your connection and reload the page.</div>`;
+    pyBtn.textContent='▶ Run';
+    showGlobalBanner('⚠️ Python sandbox failed to load. Check your connection and reload.');
+  }
+}
+function loadPy(key){
+  pyEd.value=pySnippets[key]||'';
+}
+function clearPy(){
+  pyEd.value='';
+  pyOut.innerHTML='<span class="ph">Click Run to execute.</span>';
+}
+async function runPython(){
+  if(!pyReady){pyOut.innerHTML='<span style="color:var(--text3)">⏳ Python is still loading... please wait.</span>';return;}
+  if(pyRunning)return;
+  pyRunning=true;
+  pyBtn.textContent='⏳ Running…';
+  pyBtn.disabled=true;
+  pyOut.innerHTML='<span style="color:var(--text3)">Running...</span>';
+  const code=pyEd.value;
+  try{
+    const result=await pyodide.runPythonAsync(`
+import sys, io, base64
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
+
+_stdout=io.StringIO()
+_stderr=io.StringIO()
+sys.stdout=_stdout
+sys.stderr=_stderr
+
+_plot_imgs=[]
+_orig_show=plt.show
+def _capture_show(*a,**k):
+  buf=io.BytesIO()
+  plt.savefig(buf,format='png',bbox_inches='tight',dpi=120,facecolor='none',transparent=True)
+  buf.seek(0)
+  _plot_imgs.append(base64.b64encode(buf.read()).decode())
+  plt.clf()
+  plt.close('all')
+plt.show=_capture_show
+
+try:
+  exec(${JSON.stringify(code)})
+except Exception as e:
+  import traceback
+  print(traceback.format_exc(), file=sys.stderr)
+finally:
+  plt.show=_orig_show
+  plt.clf()
+  plt.close('all')
+  sys.stdout=sys.__stdout__
+  sys.stderr=sys.__stderr__
+
+[_stdout.getvalue(), _stderr.getvalue(), _plot_imgs]
+`);
+    const [stdout, stderr, imgs]=result.toJs();
+    let html='';
+    function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    if(stdout&&stdout.trim())html+=`<div class="stdout">${escHtml(stdout)}</div>`;
+    if(stderr&&stderr.trim())html+=`<div class="err">${escHtml(stderr)}</div>`;
+    if(imgs&&imgs.length)imgs.forEach(src=>{html+=`<img src="data:image/png;base64,${src}" alt="plot">`});
+    pyOut.innerHTML=html||'<span class="ph">(no output)</span>';
+  }catch(err){
+    pyOut.innerHTML=`<div class="err">❌ ${err.message}</div>`;
+  }finally{
+    pyRunning=false;
+    pyBtn.textContent='▶ Run';
+    pyBtn.disabled=false;
+  }
+}
+
+// ─── SCROLL REVEAL ───────────────────────────────────────────
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  const revealObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  },{rootMargin:'-5% 0px -5% 0px'});
+  document.querySelectorAll('.chapter').forEach(c=>{
+    if(c.id==='hero')return; // hero always visible
+    c.setAttribute('data-reveal','');
+    revealObs.observe(c);
+  });
+}
+
+// ─── HERO TYPEWRITER ─────────────────────────────────────────
+(function(){
+  const plain=`SELECT city,\n  COUNT(*) AS orders,\n  ROUND(AVG(total_amount),2) AS avg_spend\nFROM customers c\nJOIN orders o USING(customer_id)\nGROUP BY city\nORDER BY orders DESC;`;
+  const el=document.getElementById('hero-type');
+  if(!el)return;
+
+  // Build highlighted version token-by-token (safe, no overlapping replacements)
+  function highlight(s){
+    const tokens=[
+      {re:/\b(SELECT|FROM|JOIN|USING|GROUP BY|ORDER BY|AS|ROUND|AVG|COUNT|DESC|BY)\b/g, cls:'kw'},
+      {re:/\b(customers)\b/g, cls:'tbl'},
+      {re:/\b(orders)\b(?!\s+AS\b)/g, cls:'tbl'},  // table name only, not alias
+    ];
+    // Escape HTML first
+    let out=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    // Apply highlights using non-overlapping pass
+    out=out.replace(/\b(SELECT|FROM|JOIN|USING|GROUP BY|ORDER BY|AS|ROUND|AVG|COUNT|DESC)\b/g,
+      m=>`<span class="kw">${m}</span>`);
+    out=out.replace(/\b(customers|c\.|o\.)/g,
+      m=>`<span class="tbl">${m}</span>`);
+    return out;
+  }
+
+  let i=0;
+  const cursor='<span class="demo-cursor"></span>';
+
+  function typeNext(){
+    if(i>=plain.length){
+      // Typing done — swap to highlighted version
+      el.innerHTML=highlight(plain)+cursor;
+      setTimeout(()=>{
+        const res=document.getElementById('hero-result');
+        if(res){res.style.display='block';}
+        document.querySelectorAll('.demo-result-row').forEach((row,idx)=>{
+          setTimeout(()=>row.classList.add('show'),idx*130);
+        });
+      },420);
+      return;
+    }
+    // Safe: set textContent for typing phase (no XSS risk, no broken spans)
+    el.textContent=plain.slice(0,i+1);
+    // Re-append cursor as innerHTML trick: textContent first, then append cursor span
+    const cur=document.createElement('span');
+    cur.className='demo-cursor';
+    el.appendChild(cur);
+    i++;
+    setTimeout(typeNext, i<3 ? 500 : 26);
+  }
+  setTimeout(typeNext, 900);
+})();
+// ─── LAZY LOADING ────────────────────────────────────────────
+const lazyObs=new IntersectionObserver((entries,obs)=>{
+  entries.forEach(entry=>{
+    if(!entry.isIntersecting)return;
+    const id=entry.target.id;
+    if(id==='lab-sql'&&!db&&!sqlJs){obs.unobserve(entry.target);setupSqlDb();}
+    if(id==='lab-py'&&!pyodide&&!pyReady){obs.unobserve(entry.target);initPy();}
+  });
+},{rootMargin:'200px'});
+const _labSql=document.getElementById('lab-sql');
+const _labPy=document.getElementById('lab-py');
+if(_labSql)lazyObs.observe(_labSql);
+if(_labPy)lazyObs.observe(_labPy);
+</script>
+</body>
+</html>
